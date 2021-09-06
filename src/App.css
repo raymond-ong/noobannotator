@@ -1,3 +1,21 @@
 .App {
-  border: 1px solid red;
+  /* border: 1px solid red; */
+}
+
+.AppTitle {
+  font-size: 24px;
+  padding: 10px;
+  font-weight: 500;
+  background-color: #555;
+  color: #ccc;
+  font-family: 'Arvo-Bold';
+}
+
+.AppTitleText {
+  padding-left: 10px;
+}
+
+@font-face {
+  font-family: 'Arvo-Bold';
+  src: local('Arvo-Bold'), url(./fonts/Arvo-Bold.ttf) format('opentype');
 }
