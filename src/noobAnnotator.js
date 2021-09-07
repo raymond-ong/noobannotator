@@ -1,18 +1,42 @@
-import React from 'react';
+import React, {useContext, useReducer} from 'react';
 import ReactDOM from 'react-dom';
-import {Editor, EditorState, RichUtils, getDefaultKeyBinding} from 'draft-js';
+import {Editor, EditorState, RichUtils, convertToRaw, getDefaultKeyBinding} from 'draft-js';
+import { store } from './store.js';
 import 'draft-js/dist/Draft.css';
 import './noobAnnotator.css'
 import StyleButton from './components/styleButton';
+
+const editorContentReducer = (state, action) => {
+  debugger
+  const { type, data } = action;
+  switch(type) {
+      case 'editorStateChanged':
+        const newState = {...state};
+        newState.editorContent = data;
+        console.log('Reducer detected editorStateChanged');
+        return newState;
+      default:
+        throw new Error()
+    }
+}
+
 
 function NoobAnnotator() {
   const [editorState, setEditorState] = React.useState(
     () => EditorState.createEmpty(),
   );
 
-  // const onChange = (editState) => {
-  //   setEditorState({editState});
-  // }
+  const {state, dispatch} = useContext(store);
+  //const [editorContentState, dispatchEditorContent] = useReducer(editorContentReducer, globalState.editorContent);
+
+
+  const onChange = (editState) => {    
+    setEditorState(editState);
+    const contentState = editorState.getCurrentContent();
+    const rawContent = convertToRaw(contentState);
+    dispatch({type: 'editorStateChanged', data: rawContent});
+    //dispatchEditorContent({type: 'editorStateChanged', data: rawContent})
+  }
 
   const editor = React.useRef(null);
   const focusEditor =  () => {
@@ -158,10 +182,10 @@ function NoobAnnotator() {
         customStyleMap={styleMap}
         editorState={editorState}
         handleKeyCommand={handleKeyCommand}
-        //onChange={onChange}
-        onChange={setEditorState}
+        onChange={onChange}
+        //onChange={setEditorState}
         onTab={onTab}
-        placeholder="Tell a story..."
+        placeholder="Write Something..."
         ref={editor}
         spellCheck={true}
       />

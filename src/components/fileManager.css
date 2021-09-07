@@ -1,0 +1,23 @@
+.SaveButton {
+    border: 1px solid lightgray;
+    background-color: lightgray;
+    border-radius: 5px;
+    color: #555;
+    padding: 3px;
+    cursor: pointer;
+    float: right;
+    margin-left: 5px;
+  }
+
+
+  .FileManagerContainer {
+      padding-left: 10px;
+      padding-right: 10px;
+      overflow:hidden;
+  }
+
+  .DocsDropdown {
+      padding: 4px;
+      font-size: 15px;
+      border-radius: 5px;
+  }

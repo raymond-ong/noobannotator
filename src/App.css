@@ -2,13 +2,15 @@
   /* border: 1px solid red; */
 }
 
-.AppTitle {
+.AppHeader {
   font-size: 24px;
   padding: 10px;
   font-weight: 500;
   background-color: #555;
   color: #ccc;
   font-family: 'Arvo-Bold';
+  display: grid;
+  grid-template-columns: 2fr 1fr 3fr;
 }
 
 .AppTitleText {
@@ -18,4 +20,12 @@
 @font-face {
   font-family: 'Arvo-Bold';
   src: local('Arvo-Bold'), url(./fonts/Arvo-Bold.ttf) format('opentype');
+}
+
+.SettingsArea {
+  align-items: center;
+  font-family: 'Segoe UI', serif;
+  font-size: 15px;
+  padding-right: 10px;
+  margin-left: auto; margin-right: 0;
 }
