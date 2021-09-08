@@ -17,7 +17,20 @@
   }
 
   .DocsDropdown {
-      padding: 4px;
-      font-size: 15px;
-      border-radius: 5px;
+    padding: 4px;
+    font-size: 15px;
+    border-radius: 5px;
+    border: 1px solid #555;
+  }
+
+  input::-webkit-calendar-picker-indicator {
+    opacity: 100;
+    background-color: inherit;
+ }
+
+  /* To avoid the weird surrounding outline on focus */
+  .DocsDropdown:focus {
+    outline: none;
+    border:none;
+    box-shadow: 0 0 10px #567;
   }

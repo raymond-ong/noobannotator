@@ -1,41 +1,37 @@
 import React, {useContext, useReducer} from 'react';
 import ReactDOM from 'react-dom';
-import {Editor, EditorState, RichUtils, convertToRaw, getDefaultKeyBinding} from 'draft-js';
+import {Editor, EditorState, RichUtils, convertToRaw, convertFromRaw, getDefaultKeyBinding} from 'draft-js';
 import { store } from './store.js';
 import 'draft-js/dist/Draft.css';
 import './noobAnnotator.css'
 import StyleButton from './components/styleButton';
 
-const editorContentReducer = (state, action) => {
-  debugger
-  const { type, data } = action;
-  switch(type) {
-      case 'editorStateChanged':
-        const newState = {...state};
-        newState.editorContent = data;
-        console.log('Reducer detected editorStateChanged');
-        return newState;
-      default:
-        throw new Error()
-    }
-}
-
 
 function NoobAnnotator() {
-  const [editorState, setEditorState] = React.useState(
-    () => EditorState.createEmpty(),
-  );
 
   const {state, dispatch} = useContext(store);
-  //const [editorContentState, dispatchEditorContent] = useReducer(editorContentReducer, globalState.editorContent);
+  const getInitialState = () => {    
+    if (state.editorContent === null) {
+      console.log('[NoobAnnotator] getInitialState, createEmpty');
+      return EditorState.createEmpty();      
+    }
+    //return EditorState.createWithContent(convertFromRaw(state.docs[state.docs.length-1].docContent));
+    console.log('[NoobAnnotator] getInitialState', convertToRaw(state.editorContent));
+    return EditorState.createWithContent(state.editorContent);
+  }
+  
+
+  const [editorState, setEditorState] = React.useState(getInitialState());
+  console.log('NoobAnnotator', convertToRaw(editorState.getCurrentContent()));
+  //const [editorState, setEditorState] = React.useState(state.editorContent);
 
 
   const onChange = (editState) => {    
     setEditorState(editState);
     const contentState = editorState.getCurrentContent();
-    const rawContent = convertToRaw(contentState);
-    dispatch({type: 'editorStateChanged', data: rawContent});
-    //dispatchEditorContent({type: 'editorStateChanged', data: rawContent})
+    dispatch({type: 'editorStateChanged', data: contentState});
+    //const rawContent = convertToRaw(contentState);
+    //dispatch({type: 'editorStateChanged', data: rawContent});
   }
 
   const editor = React.useRef(null);
@@ -123,7 +119,6 @@ function NoobAnnotator() {
   }
 
   const getBlockStyle = (block) => {
-    console.log(block);
     switch (block.getType()) {
       case 'blockquote': 
       console.log('blockquote!');

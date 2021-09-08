@@ -3,7 +3,7 @@ const STORAGE_DOC_NAME = "documents"
 export const localSaveContent = (content, docName) => {
     if (typeof(Storage) === "undefined") {
         console.error("localSaveLayout: browser does not supoort Local Storage");
-        return;
+        return [];
     }
 
     let savedDocuments = [];
@@ -13,12 +13,12 @@ export const localSaveContent = (content, docName) => {
     }
 
     // Find any existing layout with same name. Remove it and replace with our new one.
-    let ret = createOrReplaceDocument(savedDocuments, docName, content);
+    createOrReplaceDocument(savedDocuments, docName, content);
 
     localStorage.setItem(STORAGE_DOC_NAME, JSON.stringify(savedDocuments));
     console.log("localSaveLayout");
 
-    return ret;
+    return savedDocuments;
 }
 
 const createOrReplaceDocument = (savedDocs, name, docContent) => {
@@ -40,7 +40,7 @@ const locaLoadContent = (docName) => {
 
 }
 
-const localListDocs = () => {
+export const localListDocs = () => {
     let savedLayoutsStr = localStorage.getItem(STORAGE_DOC_NAME);
     if (savedLayoutsStr === null) {
         return [];
