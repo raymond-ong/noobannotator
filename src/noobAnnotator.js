@@ -1,4 +1,4 @@
-import React, {useContext, useReducer} from 'react';
+import React, {useContext, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import {Editor, EditorState, RichUtils, convertToRaw, convertFromRaw, getDefaultKeyBinding} from 'draft-js';
 import { store } from './store.js';
@@ -8,8 +8,7 @@ import StyleButton from './components/styleButton';
 
 
 function NoobAnnotator() {
-
-  const {state, dispatch} = useContext(store);
+  const {state, dispatch} = useContext(store); // Warning: everytime there is a change in the store, will force a re-render
   const getInitialState = () => {    
     if (state.editorContent === null) {
       console.log('[NoobAnnotator] getInitialState, createEmpty');
@@ -19,9 +18,14 @@ function NoobAnnotator() {
     console.log('[NoobAnnotator] getInitialState', convertToRaw(state.editorContent));
     return EditorState.createWithContent(state.editorContent);
   }
+
+  useEffect(() => {
+    console.log("useEffect", state.docCurreFileName);
+    setEditorState(getInitialState());
+  }, [state.docCurreFileName]);
   
 
-  const [editorState, setEditorState] = React.useState(getInitialState());
+  const [editorState, setEditorState] = React.useState(() => getInitialState()); // pass in a function to avoid re-running the function unnecessarily
   console.log('NoobAnnotator', convertToRaw(editorState.getCurrentContent()));
   //const [editorState, setEditorState] = React.useState(state.editorContent);
 

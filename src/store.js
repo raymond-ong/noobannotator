@@ -85,7 +85,7 @@ const StateProvider = ( { children } ) => {
             newStateDocName.docCurreFileName = fileName;        
 
             // [2] Load the existing document that matches (TODO: should not come here if there are unsaved changes)
-            //EditorHelper.setContent(newStateDocName, fileName);
+            EditorHelper.setContent(newStateDocName, fileName);
 
             return newStateDocName;            
         default:
