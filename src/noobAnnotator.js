@@ -5,9 +5,14 @@ import { store } from './store.js';
 import 'draft-js/dist/Draft.css';
 import './noobAnnotator.css'
 import StyleButton from './components/styleButton';
+import BlockStyleControls, {getBlockStyle} from './richTextComponents/blockComponents';
+import InlineStyleControls from './richTextComponents/inlineComponents';
+import AnnotatorControls from './richTextComponents/annotatorComponents';
+import createEmojiPlugin from '@draft-js-plugins/emoji';
+import '@draft-js-plugins/emoji/lib/plugin.css';
 
 
-function NoobAnnotator() {
+const NoobAnnotator = () => {
   const {state, dispatch} = useContext(store); // Warning: everytime there is a change in the store, will force a re-render
   const getInitialState = () => {    
     if (state.editorContent === null) {
@@ -19,6 +24,8 @@ function NoobAnnotator() {
     return EditorState.createWithContent(state.editorContent);
   }
 
+  // Fix for loading other documents when documents Dropdown is changed
+  // TODO: may not be needed if we use proper reducer
   useEffect(() => {
     console.log("useEffect", state.docCurreFileName);
     setEditorState(getInitialState());
@@ -34,75 +41,12 @@ function NoobAnnotator() {
     setEditorState(editState);
     const contentState = editorState.getCurrentContent();
     dispatch({type: 'editorStateChanged', data: contentState});
-    //const rawContent = convertToRaw(contentState);
-    //dispatch({type: 'editorStateChanged', data: rawContent});
   }
 
   const editor = React.useRef(null);
   const focusEditor =  () => {
     editor.current.focus();
   }
-
-  const BLOCK_TYPES = [
-    {label: 'H1', style: 'header-one'},
-    {label: 'H2', style: 'header-two'},
-    {label: 'H3', style: 'header-three'},
-    {label: 'H4', style: 'header-four'},
-    {label: 'H5', style: 'header-five'},
-    {label: 'H6', style: 'header-six'},
-    {label: 'Blockquote', style: 'blockquote'},
-    {label: 'UL', style: 'unordered-list-item'},
-    {label: 'OL', style: 'ordered-list-item'},
-    {label: 'Code Block', style: 'code-block'},
-  ];
-
-  const BlockStyleControls = (props) => {    
-    const {editorState} = props;
-    const selection = editorState.getSelection();
-    const blockType = editorState
-      .getCurrentContent()
-      .getBlockForKey(selection.getStartKey())
-      .getType();
-
-    return (
-      <div className="RichEditor-controls">
-        {BLOCK_TYPES.map((type) =>
-          <StyleButton
-            key={type.label}
-            active={type.style === blockType}
-            label={type.label}
-            onToggle={props.onToggle}
-            style={type.style}
-          />
-        )}
-      </div>
-    );
-  };
-
-  var INLINE_STYLES = [
-    {label: 'Bold', style: 'BOLD'},
-    {label: 'Italic', style: 'ITALIC'},
-    {label: 'Underline', style: 'UNDERLINE'},
-    {label: 'Monospace', style: 'CODE'},
-  ];
-
-  const InlineStyleControls = (props) => {
-    const currentStyle = props.editorState.getCurrentInlineStyle();
-    
-    return (
-      <div className="RichEditor-controls">
-        {INLINE_STYLES.map((type) =>
-          <StyleButton
-            key={type.label}
-            active={currentStyle.has(type.style)}
-            label={type.label}
-            onToggle={props.onToggle}
-            style={type.style}
-          />
-        )}
-      </div>
-    );
-  };
 
   const toggleBlockType = (blockType) => {
     setEditorState(
@@ -120,15 +64,6 @@ function NoobAnnotator() {
         inlineStyle
       )
     );
-  }
-
-  const getBlockStyle = (block) => {
-    switch (block.getType()) {
-      case 'blockquote': 
-      console.log('blockquote!');
-        return 'RichEditor-blockquote';
-      default: return null;
-    }
   }
 
   const handleKeyCommand = (command) => {
@@ -164,6 +99,10 @@ function NoobAnnotator() {
     }
   }
 
+  const emojiPlugin = createEmojiPlugin({
+  });
+const { EmojiSuggestions, EmojiSelect } = emojiPlugin;
+
   return <div className="RichEditor-root">
     <div className="draftToolBar">
       <BlockStyleControls
@@ -173,6 +112,10 @@ function NoobAnnotator() {
       <InlineStyleControls
         editorState={editorState}
         onToggle={toggleInlineStyle}
+      />
+      <AnnotatorControls 
+        editorState={editorState}
+        onChange={setEditorState}
       />
     </div>
     <div className={className} onClick={focusEditor}>
@@ -187,7 +130,10 @@ function NoobAnnotator() {
         placeholder="Write Something..."
         ref={editor}
         spellCheck={true}
+        plugins={[emojiPlugin]}
       />
+      <EmojiSuggestions />
+      <EmojiSelect />
     </div>
   </div>
 }
