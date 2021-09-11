@@ -17,11 +17,13 @@ class StyleButton extends React.Component {
       }
 
       return (
-        <span className={className} onMouseDown={this.onToggle}>
+        <span className={className} 
+          onMouseDown={this.onToggle}
+        >
           {this.props.label}
         </span>
       );
     }
   }
 
-  export default StyleButton;
+  export default StyleButton

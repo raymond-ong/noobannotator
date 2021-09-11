@@ -8,9 +8,6 @@ import StyleButton from './components/styleButton';
 import BlockStyleControls, {getBlockStyle} from './richTextComponents/blockComponents';
 import InlineStyleControls from './richTextComponents/inlineComponents';
 import AnnotatorControls from './richTextComponents/annotatorComponents';
-import createEmojiPlugin from '@draft-js-plugins/emoji';
-import '@draft-js-plugins/emoji/lib/plugin.css';
-
 
 const NoobAnnotator = () => {
   const {state, dispatch} = useContext(store); // Warning: everytime there is a change in the store, will force a re-render
@@ -99,10 +96,6 @@ const NoobAnnotator = () => {
     }
   }
 
-  const emojiPlugin = createEmojiPlugin({
-  });
-const { EmojiSuggestions, EmojiSelect } = emojiPlugin;
-
   return <div className="RichEditor-root">
     <div className="draftToolBar">
       <BlockStyleControls
@@ -130,10 +123,7 @@ const { EmojiSuggestions, EmojiSelect } = emojiPlugin;
         placeholder="Write Something..."
         ref={editor}
         spellCheck={true}
-        plugins={[emojiPlugin]}
       />
-      <EmojiSuggestions />
-      <EmojiSelect />
     </div>
   </div>
 }
