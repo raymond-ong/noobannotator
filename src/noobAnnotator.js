@@ -1,24 +1,31 @@
 import React, {useContext, useEffect} from 'react';
 import ReactDOM from 'react-dom';
-import {Editor, EditorState, RichUtils, convertToRaw, convertFromRaw, getDefaultKeyBinding} from 'draft-js';
+import {Editor, EditorState, RichUtils, convertToRaw, convertFromRaw, getDefaultKeyBinding, CompositeDecorator} from 'draft-js';
 import { store } from './store.js';
 import 'draft-js/dist/Draft.css';
 import './noobAnnotator.css'
 import StyleButton from './components/styleButton';
 import BlockStyleControls, {getBlockStyle} from './richTextComponents/blockComponents';
 import InlineStyleControls from './richTextComponents/inlineComponents';
-import AnnotatorControls from './richTextComponents/annotatorComponents';
+import AnnotatorControls, {findLinkEntities, Link} from './richTextComponents/annotatorComponents';
 
 const NoobAnnotator = () => {
   const {state, dispatch} = useContext(store); // Warning: everytime there is a change in the store, will force a re-render
+  const decoratorLink = new CompositeDecorator([
+    {
+      strategy: findLinkEntities,
+      component: Link,
+    },
+]);
+
   const getInitialState = () => {    
     if (state.editorContent === null) {
       console.log('[NoobAnnotator] getInitialState, createEmpty');
-      return EditorState.createEmpty();      
+      return EditorState.createEmpty(decoratorLink);      
     }
     //return EditorState.createWithContent(convertFromRaw(state.docs[state.docs.length-1].docContent));
     console.log('[NoobAnnotator] getInitialState', convertToRaw(state.editorContent));
-    return EditorState.createWithContent(state.editorContent);
+    return EditorState.createWithContent(state.editorContent, decoratorLink);
   }
 
   // Fix for loading other documents when documents Dropdown is changed
