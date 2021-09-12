@@ -1,0 +1,84 @@
+.CommentContainer {
+    background-color: #fffafa;
+    border: 1px solid blue;
+    border-left: 3px solid blue;    
+    border-radius: 5px;
+}
+
+.CommentHeader {
+    background-color: #ddd;
+    padding: 0px 5px 0px 5px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    font-weight: 500;
+    font-size: 12px;
+}
+
+.CommentHeaderCaption {
+    
+}
+
+.CommentHeaderColor {
+    margin-left: auto; 
+    margin-right: 0;    
+}
+
+.ColorField {
+    background-color: white;
+    display: flex;
+    margin: 2px;
+}
+
+
+.CommentHeaderColorInput {
+    width: 80px;
+    border: 0px ;
+    margin: 1px;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.CommentHeaderColorInput:focus {
+    outline: none;
+    border: 0px;
+}
+
+.CommentBody {
+    /* border: 1px solid red; */
+    min-height: 1em;
+    padding: 5px;
+}
+
+.CommentTextArea {
+    resize: none;
+    border: 0px;
+    height: 100%;
+    width: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.CommentTextArea:focus {
+    outline: none;
+    border: 0px;
+}
+
+.CommentFooter {
+    background-color: #ddd;
+    display: flex;
+    justify-content: right;
+}
+
+.CommentFooterButton {
+    display: inline-block;
+    padding: 0px;
+    font-size: 12px;
+    margin: 3px;
+    border: 1px solid #bbb;
+    background-color: #bbb;    
+    min-width: 50px;
+    text-align: center;
+    font-weight: 500;
+    border-radius: 3px;
+    cursor: pointer;
+}
+

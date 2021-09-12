@@ -8,6 +8,7 @@ import StyleButton from './components/styleButton';
 import BlockStyleControls, {getBlockStyle} from './richTextComponents/blockComponents';
 import InlineStyleControls from './richTextComponents/inlineComponents';
 import AnnotatorControls, {findLinkEntities, Link} from './richTextComponents/annotatorComponents';
+import Comment from './components/commentComponent';
 
 const NoobAnnotator = () => {
   const {state, dispatch} = useContext(store); // Warning: everytime there is a change in the store, will force a re-render
@@ -103,6 +104,10 @@ const NoobAnnotator = () => {
     }
   }
 
+  const getComments = () => {
+    return <Comment color="blue" text="Hello Comment"></Comment>
+  }
+
   return <div className="RichEditor-root">
     <div className="draftToolBar">
       <BlockStyleControls
@@ -118,19 +123,22 @@ const NoobAnnotator = () => {
         onChange={setEditorState}
       />
     </div>
-    <div className={className} onClick={focusEditor}>
-      <Editor
-        blockStyleFn={getBlockStyle}
-        customStyleMap={styleMap}
-        editorState={editorState}
-        handleKeyCommand={handleKeyCommand}
-        onChange={onChange}
-        //onChange={setEditorState}
-        onTab={onTab}
-        placeholder="Write Something..."
-        ref={editor}
-        spellCheck={true}
-      />
+    <div className="EditorAndCommentContainer">
+      <div className={className} onClick={focusEditor}>
+        <Editor
+          blockStyleFn={getBlockStyle}
+          customStyleMap={styleMap}
+          editorState={editorState}
+          handleKeyCommand={handleKeyCommand}
+          onChange={onChange}
+          //onChange={setEditorState}
+          onTab={onTab}
+          placeholder="Write Something..."
+          ref={editor}
+          spellCheck={true}
+        />
+      </div>
+      <div className="CommentAreaContainer">{getComments()}</div>
     </div>
   </div>
 }

@@ -7,9 +7,9 @@ import Picker from 'emoji-picker-react';
 
 const styles = {
     link: {
-      color: '#3b5998',
-      textDecoration: 'underline',
-      border: '1px solid red'
+        backgroundColor: 'rgba(0, 0, 255, 0.1)',
+        borderRadius: '3px',
+        cursor: 'pointer'
     },
   };
 
@@ -43,9 +43,9 @@ export const Link = (props) => {
     console.log("LINKKKKKKKKKKKKKKK!!!!");
     const {url} = props.contentState.getEntity(props.entityKey).getData();
     return (
-      <a href={url} style={styles.link}>
+      <span href={url} style={styles.link}>
         {props.children}
-      </a>
+      </span>
     );
   };
 

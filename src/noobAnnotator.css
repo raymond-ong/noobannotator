@@ -77,3 +77,13 @@
     display: inline-block;
   }
   
+
+  .EditorAndCommentContainer {
+    display: grid;
+    grid-template-columns: auto 300px;
+  }
+
+  .CommentAreaContainer {
+    background-color: honeydew;
+    padding: 1px;
+  }
