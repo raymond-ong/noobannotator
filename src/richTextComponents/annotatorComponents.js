@@ -40,10 +40,10 @@ export function findLinkEntities(contentBlock, callback, contentState) {
   }
 
 export const Link = (props) => {
-    console.log("LINKKKKKKKKKKKKKKK!!!!");
+    console.log("LINKKKKKKKKKKKKKKK!!!!", props);
     const {url} = props.contentState.getEntity(props.entityKey).getData();
     return (
-      <span href={url} style={styles.link}>
+      <span id={'comment-span-'+props.entityKey} style={styles.link}>
         {props.children}
       </span>
     );
@@ -66,13 +66,13 @@ const AnnotatorControls = (props) => {
         console.log('confirmLink start');
         logState();
         // const {editorState, urlValue} = this.state;
-        const urlValue = 'my comment';
+        const commentText = 'my comment';
         const contentState = editorState.getCurrentContent();
     
         const contentStateWithEntity = contentState.createEntity(
           'LINK',
           'MUTABLE',
-          {url: urlValue}
+          {comment: commentText}
         );
         const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
         

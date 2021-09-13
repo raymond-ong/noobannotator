@@ -2,7 +2,7 @@ import { Icon, Input } from 'semantic-ui-react'
 import './commentComponent.css';
 
 const Comment = (props) => {
-    return <div className="CommentContainer">
+    return <div id={'comment-div-' + props.entityKey} className="CommentContainer">
         <div className="CommentHeader">
             <div className="CommentHeaderCaption">New Comment</div>
             <div className="CommentHeaderColor">
@@ -13,7 +13,7 @@ const Comment = (props) => {
             </div>                    
         </div>
         <div className="CommentBody">
-            <textarea className="CommentTextArea" resize="none" defaultValue="Some comment"/>
+            <textarea className="CommentTextArea" resize="none" defaultValue={props.text} />
         </div>
         <div className="CommentFooter">
             <div className="CommentFooterButton">OK</div>

@@ -35,6 +35,33 @@ const NoobAnnotator = () => {
     console.log("useEffect", state.docCurreFileName);
     setEditorState(getInitialState());
   }, [state.docCurreFileName]);
+
+  // For drawing line or repositioning comment blocks
+  useEffect(() => {
+    console.log("UseEffect Start...");
+    let currContent = editorState.getCurrentContent();
+    let blocks = currContent.getBlockMap();
+    let entities = currContent.getAllEntities();    
+    entities.forEach((value, key, map) => {      
+      let spanElem = document.getElementById(`comment-span-${key}`);
+      if (!spanElem) {
+        console.log('[UseEffect] span iter', key, value.data.comment, 'not found');
+      }
+      else {
+        console.log('[UseEffect] span iter', key, value.data.comment, spanElem);
+      }
+
+      let divElem = document.getElementById(`comment-div-${key}`);
+      if (!divElem) {
+        console.log('[UseEffect] div iter', key, value.data.comment, 'not found');
+      }
+      else {
+        console.log('[UseEffect] div iter', key, value.data.comment, divElem);
+      }
+
+    });
+    console.log("UseEffect End...");
+  });
   
 
   const [editorState, setEditorState] = React.useState(() => getInitialState()); // pass in a function to avoid re-running the function unnecessarily
@@ -105,7 +132,18 @@ const NoobAnnotator = () => {
   }
 
   const getComments = () => {
-    return <Comment color="blue" text="Hello Comment"></Comment>
+    let currContent = editorState.getCurrentContent();
+    let blocks = currContent.getBlockMap();
+    let entities = currContent.getAllEntities();
+    let ret = [];
+    entities.forEach((value, key, map) => {
+      console.log('[getComments] iter', key, value.data.comment)
+      ret.push(<Comment key={key} entityKey={key} color="blue" text={value.data.comment}></Comment>);
+    });
+    
+    //let blocks
+
+    return ret;
   }
 
   return <div className="RichEditor-root">
