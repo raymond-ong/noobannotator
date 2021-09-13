@@ -4,7 +4,11 @@ export class EditorHelper
 {
     static getInitialContent = (state) => {
         if (state.docs && state.docs.length > 0) {
-          return convertFromRaw(state.docs[state.docs.length-1].docContent);
+          console.log('EditorHelper.getInitialContent()...', state.docs[state.docs.length-1].name);          
+          return {
+            content: convertFromRaw(state.docs[state.docs.length-1].docContent),
+            fileName: state.docs[state.docs.length-1].name
+          }
         }
         return null;
     }

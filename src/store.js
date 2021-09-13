@@ -38,7 +38,9 @@ const GetInitialState = () => {
     ret.docs = localListDocs();
     if (ret.docs.length > 0) {
         //ret.activeDoc = ret.docs[ret.docs.length -1]; // set the last one as the active document
-        ret.editorContent = EditorHelper.getInitialContent(ret);
+        let {content, fileName} = EditorHelper.getInitialContent(ret);
+        ret.editorContent = content;
+        ret.docCurreFileName = fileName;
     }
 
     return ret;

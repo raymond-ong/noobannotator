@@ -3,6 +3,7 @@
     border: 1px solid lightgray;
     cursor: text;
     min-height: 6em;
+
     /* height: 100px;
     width: 100px; */
 }
@@ -13,14 +14,20 @@
 .draftToolBar {
   background-color: #eee;
   padding: 5px;
+  height: var(--toolbarHeight);
 }
 
+/*Add top padding to offset the fixed title bar*/
 .RichEditor-root {
     background: #fff;
-    border: 1px solid #ddd;
+    /* border: 1px solid #ddd; */
+    border: 3px solid green;
     font-family: 'Segoe UI', serif;
     font-size: 14px;
     padding: 0px;
+    padding-top: 3.3em;
+    height: calc(100vh);
+    --toolbarHeight: 110px;
   }
   
   .RichEditor-editor {
@@ -81,6 +88,10 @@
   .EditorAndCommentContainer {
     display: grid;
     grid-template-columns: auto 300px;
+    overflow: auto;
+    border: 1px solid red;
+    height: calc(100% - var(--toolbarHeight));
+    /* height: calc(100% - 110px); */
   }
 
   .CommentAreaContainer {
