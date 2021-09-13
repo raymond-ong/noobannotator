@@ -91,6 +91,7 @@
     overflow: auto;
     border: 1px solid red;
     height: calc(100% - var(--toolbarHeight));
+    padding-top: 10px;
     /* height: calc(100% - 110px); */
   }
 
@@ -98,3 +99,9 @@
     background-color: honeydew;
     padding: 1px;
   }
+
+.svgContainer {
+  border: 1px solid purple;
+  /* position: absolute; */
+  /* height: calc(100% - var(--toolbarHeight) - 4em); */
+}

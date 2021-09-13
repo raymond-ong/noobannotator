@@ -50,6 +50,8 @@ const NoobAnnotator = () => {
     let editorElem = document.getElementById('RichEditor-editor');
     entities.forEach((value, key, map) => {      
       let spanElem = document.getElementById(`comment-span-${key}`);
+      let line1Elem = document.getElementById(`svg-line1-${key}`);
+      let line2Elem = document.getElementById(`svg-line2-${key}`);
       let divElem = document.getElementById(`comment-div-${key}`);
       
       if (!spanElem) {
@@ -61,18 +63,33 @@ const NoobAnnotator = () => {
         return;
       }
       
-      console.log('[UseEffect] div iter', key, value.data.comment, divElem);
-      console.log('[UseEffect] span iter', key, value.data.comment, spanElem);
+      //console.log('[UseEffect] div iter', key, value.data.comment, divElem);
+      //console.log('[UseEffect] span iter', key, value.data.comment, spanElem);
       let divRect = divElem.getBoundingClientRect();
-      let spanRect = spanElem.getBoundingClientRect();            
+      let spanRect = spanElem.getBoundingClientRect();    
+      let editorRect = editorElem.getBoundingClientRect();    
 
       // Draw a line from:
       // [a] span bottom-right to editor right
       // [b] editor right to div top
       let editorRight = editorElem.getBoundingClientRect().right;
-      console.log('editorElem right', editorRight, 'spanRect', spanRect, 'divRect', divRect);
+      //console.log('editorElem right', editorRight, 'spanRect', spanRect, 'divRect', divRect);
+      console.log('editorRect', editorRect);
+      console.log('divRect', divRect);
+      console.log('spanRect', spanRect);
+      console.log('------', divRect.top - editorRect.top);
 
+      const padding = 15;
+      const padding2 = 80;
+      const offsetEditorAndSpan = spanRect.top - editorRect.top;
+      line1Elem.setAttribute("x1", spanRect.right-padding);
+      line1Elem.setAttribute("x2", editorRight-padding2);
 
+      line2Elem.setAttribute("x1", editorRight-padding2);
+      line2Elem.setAttribute("x2", editorRight-padding2 + 50);
+      line2Elem.setAttribute("y2", divRect.top - editorRect.top - offsetEditorAndSpan);
+
+      // TODO: May need to update the svg component height itself too
 
     });
     console.log("UseEffect for comments End...");
@@ -193,9 +210,13 @@ const NoobAnnotator = () => {
         />
       </div>
       <div className="CommentAreaContainer">{getComments()}</div>
-      <svg id='connector_canvas'>
-        <line x1="50" y1="50" x2="350" y2="50" stroke="red"/>
-      </svg>
+      {/* <svg id='connector_canvas' style={{position: "absolute", 
+                                        width: "100%", 
+                                        }}>
+          <line x1="50" y1="50" x2="350" y2="50" stroke="orange"/>
+        </svg> */}
+      <div class="svgContainer">
+      </div>
     </div>
   </div>
 }

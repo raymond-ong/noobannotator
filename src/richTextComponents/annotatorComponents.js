@@ -9,7 +9,8 @@ const styles = {
     link: {
         backgroundColor: 'rgba(0, 0, 255, 0.1)',
         borderRadius: '3px',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        zIndex: 100
     },
   };
 
@@ -39,13 +40,21 @@ export function findLinkEntities(contentBlock, callback, contentState) {
     );    
   }
 
+  // Set Pointer-Events to none for the SVG to avoid interfering with the mouse cursor and events
 export const Link = (props) => {
     console.log("LINKKKKKKKKKKKKKKK!!!!", props);
     const {url} = props.contentState.getEntity(props.entityKey).getData();
     return (
-      <span id={'comment-span-'+props.entityKey} style={styles.link}>
+        <>
+        <svg id={'svg-span-'+props.entityKey} style={{position: "absolute", width: "100%", height: "500", left: "0", cursor: "default", border: "1px solid magenta", pointerEvents: "none"}}>
+        <line id={'svg-line1-'+props.entityKey} x1="0" y1="0" x2="350" y2="0" stroke="blue" style={{}}/>
+        <line id={'svg-line2-'+props.entityKey} x1="0" y1="0" x2="350" y2="0" stroke="brown" />
+        </svg>
+        <span id={'comment-span-'+props.entityKey} style={styles.link}>
         {props.children}
-      </span>
+        </span>
+        </>
+    
     );
   };
 
