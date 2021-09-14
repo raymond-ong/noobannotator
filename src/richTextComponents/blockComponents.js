@@ -1,4 +1,4 @@
-import '../noobAnnotator.css';
+import '../mainEditor.css';
 import StyleButton from '../components/styleButton';
 
 const BLOCK_TYPES = [

@@ -1,5 +1,5 @@
 import './App.css';
-import NoobAnnotator from './noobAnnotator';
+import MainEditor from './mainEditor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCommentDots } from "@fortawesome/free-solid-svg-icons";
 import { StateProvider } from './store.js';
@@ -23,7 +23,7 @@ function App() {
             <FileManager/>
           </div>
         </div>
-        <NoobAnnotator/>
+        <MainEditor/>
       </div>
     </StateProvider>
   );

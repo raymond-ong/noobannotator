@@ -1,17 +1,3 @@
-/* Currently not used */
-.NoobAnnotatorContainer
-{
-    border: 1px solid lightgray;
-    cursor: text;
-    min-height: 6em;
-
-    /* height: 100px;
-    width: 100px; */
-}
-
-.NoobAnnotator {
-}
-
 .draftToolBar {
   background-color: #eee;
   padding: 5px;

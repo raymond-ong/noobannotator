@@ -3,16 +3,16 @@ import ReactDOM from 'react-dom';
 import {Editor, EditorState, RichUtils, convertToRaw, convertFromRaw, getDefaultKeyBinding, CompositeDecorator} from 'draft-js';
 import { store } from './store.js';
 import 'draft-js/dist/Draft.css';
-import './noobAnnotator.css'
+import './mainEditor.css';
 import StyleButton from './components/styleButton';
 import BlockStyleControls, {getBlockStyle} from './richTextComponents/blockComponents';
 import InlineStyleControls from './richTextComponents/inlineComponents';
 import AnnotatorControls, {findLinkEntities, Link} from './richTextComponents/annotatorComponents';
 import Comment from './components/commentComponent';
 
-const NoobAnnotator = () => {
+const MainEditor = () => {
   const {state, dispatch} = useContext(store); // Warning: everytime there is a change in the store, will force a re-render
-  console.log('NoobAnnotator render', state);
+  console.log('MainEditor render', state);
   const decoratorLink = new CompositeDecorator([
     {
       strategy: findLinkEntities,
@@ -22,12 +22,12 @@ const NoobAnnotator = () => {
 
   const getInitialState = () => {    
     if (state.editorContent === null) {
-      console.log('[NoobAnnotator] getInitialState, createEmpty');
+      console.log('[MainEditor] getInitialState, createEmpty');
       return EditorState.createEmpty(decoratorLink);
       //return EditorState.createEmpty();
     }
     //return EditorState.createWithContent(convertFromRaw(state.docs[state.docs.length-1].docContent));
-    console.log('[NoobAnnotator] getInitialState', convertToRaw(state.editorContent));
+    console.log('[MainEditor] getInitialState', convertToRaw(state.editorContent));
     return EditorState.createWithContent(state.editorContent, decoratorLink);
     //return EditorState.createWithContent(state.editorContent);
   }
@@ -107,7 +107,7 @@ const NoobAnnotator = () => {
   
 
   const [editorState, setEditorState] = React.useState(() => getInitialState()); // pass in a function to avoid re-running the function unnecessarily
-  console.log('NoobAnnotator', convertToRaw(editorState.getCurrentContent()));
+  console.log('MainEditor', convertToRaw(editorState.getCurrentContent()));
   //const [editorState, setEditorState] = React.useState(state.editorContent);
 
 
@@ -228,4 +228,4 @@ const NoobAnnotator = () => {
   </div>
 }
 
-export default NoobAnnotator;
+export default MainEditor;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../noobAnnotator.css';
+import '../mainEditor.css';
 import StyleButton from '../components/styleButton';
 import {Editor, EditorState, Modifier, RichUtils, convertToRaw, convertFromRaw, CompositeDecorator} from 'draft-js';
 import { Button, Popup } from 'semantic-ui-react';
