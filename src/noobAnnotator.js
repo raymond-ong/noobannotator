@@ -53,6 +53,7 @@ const NoobAnnotator = () => {
       let line1Elem = document.getElementById(`svg-line1-${key}`);
       let line2Elem = document.getElementById(`svg-line2-${key}`);
       let divElem = document.getElementById(`comment-div-${key}`);
+      let svgElem = document.getElementById(`svg-span-${key}`);
       
       if (!spanElem) {
         console.log('[UseEffect] span iter', key, value.data.comment, 'not found');
@@ -62,12 +63,16 @@ const NoobAnnotator = () => {
         console.log('[UseEffect] div iter', key, value.data.comment, 'not found');
         return;
       }
-      
+     
       //console.log('[UseEffect] div iter', key, value.data.comment, divElem);
       //console.log('[UseEffect] span iter', key, value.data.comment, spanElem);
       let divRect = divElem.getBoundingClientRect();
       let spanRect = spanElem.getBoundingClientRect();    
       let editorRect = editorElem.getBoundingClientRect();    
+
+      svgElem.style.top = `${editorRect.top - spanRect.top}px`;
+      svgElem.style.height = editorRect.height;
+
 
       // Draw a line from:
       // [a] span bottom-right to editor right
@@ -85,13 +90,13 @@ const NoobAnnotator = () => {
       const offsetEditorAndSpan = spanRect.top - editorRect.top;
       line1Elem.setAttribute("x1", spanRect.right-paddingLeft);
       line1Elem.setAttribute("x2", editorRight-paddingRightLeft);
-      line1Elem.setAttribute("y1", 0.5);
-      line1Elem.setAttribute("y2", 0.5);
+      line1Elem.setAttribute("y1", 0.5 + offsetEditorAndSpan);
+      line1Elem.setAttribute("y2", 0.5 + offsetEditorAndSpan);
 
       line2Elem.setAttribute("x1", editorRight-paddingRightLeft);
       line2Elem.setAttribute("x2", editorRight-paddingRightLeft + 25);
-      line2Elem.setAttribute("y1", 0.5);
-      line2Elem.setAttribute("y2", divRect.top - editorRect.top - offsetEditorAndSpan);
+      line2Elem.setAttribute("y1", 0.5 + offsetEditorAndSpan);
+      line2Elem.setAttribute("y2", divRect.top - editorRect.top);
 
       // TODO: May need to update the svg component height itself too
 
