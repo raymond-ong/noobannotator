@@ -10,7 +10,6 @@ const styles = {
         backgroundColor: 'rgba(0, 0, 255, 0.1)',
         borderRadius: '3px',
         cursor: 'pointer',
-        zIndex: 100
     },
   };
 
@@ -46,9 +45,17 @@ export const Link = (props) => {
     const {url} = props.contentState.getEntity(props.entityKey).getData();
     return (
         <>
-        <svg id={'svg-span-'+props.entityKey} style={{position: "absolute", width: "100%", height: "500", left: "0", cursor: "default", border: "1px solid magenta", pointerEvents: "none"}}>
-        <line id={'svg-line1-'+props.entityKey} x1="0" y1="0" x2="350" y2="0" stroke="blue" style={{}}/>
-        <line id={'svg-line2-'+props.entityKey} x1="0" y1="0" x2="350" y2="0" stroke="brown" />
+        <svg id={'svg-span-'+props.entityKey} style={{position: "absolute", 
+                                                width: "calc(100% + 100px)", 
+                                                height: "500px", 
+                                                left: "0", 
+                                                cursor: "default", 
+                                                zIndex: "100",
+                                                marginRight: "-200px",
+                                                // border: "1px solid magenta", 
+                                                pointerEvents: "none"}}>
+          <line id={'svg-line1-'+props.entityKey} x1="0" y1="0" x2="350" y2="0" stroke="rgba(0, 0, 255, 0.4)" stroke-width="1"/>
+          <line id={'svg-line2-'+props.entityKey} x1="0" y1="0" x2="350" y2="0" stroke="rgba(0, 0, 255, 0.4)" stroke-width="1"/>
         </svg>
         <span id={'comment-span-'+props.entityKey} style={styles.link}>
         {props.children}

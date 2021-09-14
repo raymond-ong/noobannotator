@@ -79,14 +79,18 @@ const NoobAnnotator = () => {
       console.log('spanRect', spanRect);
       console.log('------', divRect.top - editorRect.top);
 
-      const padding = 15;
-      const padding2 = 80;
+      const paddingLeft = 15;
+      const paddingRightLeft = 20 + paddingLeft;
+      // Use 0.5 to smooth out the lines -- SVG thingy
       const offsetEditorAndSpan = spanRect.top - editorRect.top;
-      line1Elem.setAttribute("x1", spanRect.right-padding);
-      line1Elem.setAttribute("x2", editorRight-padding2);
+      line1Elem.setAttribute("x1", spanRect.right-paddingLeft);
+      line1Elem.setAttribute("x2", editorRight-paddingRightLeft);
+      line1Elem.setAttribute("y1", 0.5);
+      line1Elem.setAttribute("y2", 0.5);
 
-      line2Elem.setAttribute("x1", editorRight-padding2);
-      line2Elem.setAttribute("x2", editorRight-padding2 + 50);
+      line2Elem.setAttribute("x1", editorRight-paddingRightLeft);
+      line2Elem.setAttribute("x2", editorRight-paddingRightLeft + 25);
+      line2Elem.setAttribute("y1", 0.5);
       line2Elem.setAttribute("y2", divRect.top - editorRect.top - offsetEditorAndSpan);
 
       // TODO: May need to update the svg component height itself too
@@ -213,10 +217,8 @@ const NoobAnnotator = () => {
       {/* <svg id='connector_canvas' style={{position: "absolute", 
                                         width: "100%", 
                                         }}>
-          <line x1="50" y1="50" x2="350" y2="50" stroke="orange"/>
+          <line x1="50" y1="50" x2="350" y2="50" stroke="blue"/>
         </svg> */}
-      <div class="svgContainer">
-      </div>
     </div>
   </div>
 }
