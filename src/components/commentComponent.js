@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Icon, Input } from 'semantic-ui-react'
 import TextareaAutosize from 'react-textarea-autosize';
+import OutsideAlerter from './outsideAlerter';
 import './commentComponent.css';
 
 /**
@@ -13,13 +14,36 @@ const Comment = (props) => {
     let [isEditMode, setEditMode] = useState(!!props.isNew);
     let [color, setColor] = useState('blue');
     let [commentVal, setCommentVal] = useState(props.comment);
+
+    
+    const refCommentTxtArea = useRef(null);
+    const refWrapper = useRef(null);
     
     useEffect(() => {
         if (!isNewHandled) {
-            refElem.current.focus();
+            refCommentTxtArea.current.focus();
             setHandledNew(true);
         }
     })
+
+    useEffect(() => {
+        /**
+         * Alert if clicked on outside of element
+         */
+        function handleClickOutside(event) {
+          //console.log('[handleClickOutside]', commentVal, 'isEditMode', isEditMode, refWrapper.current && !refWrapper.current.contains(event.target));
+          if (refWrapper.current && !refWrapper.current.contains(event.target) && isEditMode) {
+            //alert("You clicked outside of me!" + commentVal);
+            setEditMode(false);
+          }
+        }
+        // Bind the event listener
+        document.addEventListener("click", handleClickOutside);
+        return () => {
+          // Unbind the event listener on clean up
+          document.removeEventListener("click", handleClickOutside);
+        };
+      }, [refWrapper, isEditMode]);
 
     const onFocusHandler = () => {
         console.log('Focused comment', commentVal);
@@ -28,20 +52,16 @@ const Comment = (props) => {
         props.parentRerender();
     }
 
-    const onBlurHandler = () => {
-        console.log('Blurred comment', commentVal);
-        setEditMode(false);
-        props.parentRerender();
-        //refElem.current.spellCheck = false;
-        // Remove Edit Mode
-    }
-
     const onCommentChanged = (evt) => {
         setCommentVal(evt.target.value);
         props.parentRerender();
+        let newData = {
+            comment: evt.target.value,
+            color: 'green'
+        }
+        props.parentUpdateComment(props.entityKey, newData);
     }
 
-    const refElem = useRef(null);
 
     const getCommentHeaderElement = (isEditMode) => {
         if (!isEditMode) {
@@ -68,25 +88,12 @@ const Comment = (props) => {
         props.parentUpdateComment(props.entityKey, newData);
     }
     
-    const getCommentFooterElement = (isEditMode) => {
-        if (!isEditMode) {
-            return null;
-        }
-    
-        return <div className="CommentFooter">
-        <div className="CommentFooterButton" onMouseDown={onClickOk}>OK</div>
-        <div className="CommentFooterButton">Cancel</div>
-        <div className="CommentFooterButton CommentFooterButtonDelete">Delete</div>
-        </div>
-    }
-    
-    console.log('comment: ', commentVal, 'isEditMode', isEditMode);
-
+    console.log('[commentComponent render]', commentVal, 'isEditMode', isEditMode);
     return <div id={'comment-div-' + props.entityKey} 
         className="CommentContainer" 
         onFocus={onFocusHandler} 
-        onBlur={onBlurHandler}
-        // ref={refElem => refElem && props.isNew && refElem.focus()}
+        //onBlur={onBlurHandler}
+        ref={refWrapper}
         >
         {getCommentHeaderElement(isEditMode)}
         <div className="CommentBody">
@@ -94,12 +101,11 @@ const Comment = (props) => {
                 className="CommentTextArea" 
                 value={commentVal} 
                 onChange={onCommentChanged}
-                ref={refElem}
+                ref={refCommentTxtArea}
                 placeholder="Comments..."
                 spellCheck={false}
             />
         </div>
-        {getCommentFooterElement(isEditMode)}
     </div>
 }
 

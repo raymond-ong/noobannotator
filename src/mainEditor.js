@@ -172,6 +172,7 @@ const MainEditor = () => {
     const contentState = editorState.getCurrentContent();
     contentState.replaceEntityData(key, data)
     EditorState.set(editorState, { currentContent: contentState });
+    onChange(editorState);
   }
 
   const getComments = () => {
