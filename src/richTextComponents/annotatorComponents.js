@@ -41,7 +41,7 @@ export function findLinkEntities(contentBlock, callback, contentState) {
 
   // Set Pointer-Events to none for the SVG to avoid interfering with the mouse cursor and events
 export const Link = (props) => {
-    console.log("LINKKKKKKKKKKKKKKK!!!!", props);
+    console.log("NEW LINKK!!!!", props);
     const {url} = props.contentState.getEntity(props.entityKey).getData();
     return (
         <>
@@ -59,8 +59,8 @@ export const Link = (props) => {
                                                 display: "float",
                                                 // border: "1px solid magenta", 
                                                 pointerEvents: "none"}}>
-          <line id={'svg-line1-'+props.entityKey} x1="0" y1="0" x2="350" y2="0" stroke="rgba(0, 0, 255, 0.4)" stroke-width="1"/>
-          <line id={'svg-line2-'+props.entityKey} x1="0" y1="0" x2="350" y2="0" stroke="rgba(0, 0, 255, 0.4)" stroke-width="1"/>
+          <line id={'svg-line1-'+props.entityKey} x1="0" y1="0" x2="350" y2="0" stroke="rgba(0, 0, 255, 0.4)" strokeWidth="1"/>
+          <line id={'svg-line2-'+props.entityKey} x1="0" y1="0" x2="350" y2="0" stroke="rgba(0, 0, 255, 0.4)" strokeWidth="1"/>
         </svg>
         </>
     
@@ -84,13 +84,16 @@ const AnnotatorControls = (props) => {
         console.log('confirmLink start');
         logState();
         // const {editorState, urlValue} = this.state;
-        const commentText = 'my comment';
+        const commentText = '';
         const contentState = editorState.getCurrentContent();
     
         const contentStateWithEntity = contentState.createEntity(
           'LINK',
           'MUTABLE',
-          {comment: commentText}
+          {
+            comment: commentText,
+            isNew: true, // TODO: Set this to false after setting focus
+          }
         );
         const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
         

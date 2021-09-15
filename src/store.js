@@ -31,7 +31,10 @@ const GetInitialState = () => {
          * To set the Save button text as either "Save" or "Save New" when user inputs something 
          */
         isDocNameNew: false,
-        docCurreFileName: null,
+        /**
+         * Current active document name
+         */
+        docCurreFileName: null,        
     }
 
     // Get the list of documents from localStorage

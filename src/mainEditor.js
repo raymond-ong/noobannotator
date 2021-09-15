@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 import {Editor, EditorState, RichUtils, convertToRaw, convertFromRaw, getDefaultKeyBinding, CompositeDecorator} from 'draft-js';
 import { store } from './store.js';
@@ -40,8 +40,10 @@ const MainEditor = () => {
     // TODO: remove this for now as this causes unnecessary rerender...anyways, we will refactor the file loading/saving machanism
   }, [state.docCurreFileName]);
 
-  // For drawing line or repositioning comment blocks
-  
+  // If comment changes, need to redraw the lines to make sure they are still pointing to the correct coordinates
+  const [commentRerender, setCommentReRender] = useState(false);
+
+  // For drawing line or repositioning comment blocks    
   useEffect(() => {
     console.log("UseEffect for comments Start...");
     let currContent = editorState.getCurrentContent();
@@ -71,7 +73,7 @@ const MainEditor = () => {
       let editorRect = editorElem.getBoundingClientRect();    
 
       svgElem.style.top = `${editorRect.top - spanRect.top}px`;
-      svgElem.style.height = editorRect.height;
+      svgElem.style.height = editorRect.height - 10; // -10 to account for paddings, and prevent unnecessary scrollbar when the content is just few
 
 
       // Draw a line from:
@@ -79,10 +81,10 @@ const MainEditor = () => {
       // [b] editor right to div top
       let editorRight = editorElem.getBoundingClientRect().right;
       //console.log('editorElem right', editorRight, 'spanRect', spanRect, 'divRect', divRect);
-      console.log('editorRect', editorRect);
-      console.log('divRect', divRect);
-      console.log('spanRect', spanRect);
-      console.log('------', divRect.top - editorRect.top);
+      // console.log('editorRect', editorRect);
+      // console.log('divRect', divRect);
+      // console.log('spanRect', spanRect);
+      // console.log('------', divRect.top - editorRect.top);
 
       const paddingLeft = 15;
       const paddingRightLeft = 20 + paddingLeft;
@@ -97,19 +99,12 @@ const MainEditor = () => {
       line2Elem.setAttribute("x2", editorRight-paddingRightLeft + 25);
       line2Elem.setAttribute("y1", 0.5 + offsetEditorAndSpan);
       line2Elem.setAttribute("y2", divRect.top - editorRect.top);
-
-      // TODO: May need to update the svg component height itself too
-
     });
     console.log("UseEffect for comments End...");
-  });
-  
-  
-
+  }, [commentRerender]);
+   
   const [editorState, setEditorState] = React.useState(() => getInitialState()); // pass in a function to avoid re-running the function unnecessarily
   console.log('MainEditor', convertToRaw(editorState.getCurrentContent()));
-  //const [editorState, setEditorState] = React.useState(state.editorContent);
-
 
   const onChange = (editState) => {    
     setEditorState(editState);
@@ -173,6 +168,12 @@ const MainEditor = () => {
     }
   }
 
+  const updateComment = (key, data) => {
+    const contentState = editorState.getCurrentContent();
+    contentState.replaceEntityData(key, data)
+    EditorState.set(editorState, { currentContent: contentState });
+  }
+
   const getComments = () => {
     let currContent = editorState.getCurrentContent();
     let blocks = currContent.getBlockMap();
@@ -180,11 +181,15 @@ const MainEditor = () => {
     let ret = [];
     entities.forEach((value, key, map) => {
       console.log('[getComments] iter', key, value.data.comment)
-      ret.push(<Comment key={key} entityKey={key} color="blue" text={value.data.comment}></Comment>);
+      ret.push(<Comment 
+        key={key} 
+        entityKey={key} 
+        color="blue" 
+        parentRerender={() => setCommentReRender(!commentRerender)}
+        parentUpdateComment={updateComment}
+        {...value.data}
+        />);
     });
-    
-    //let blocks
-
     return ret;
   }
 
@@ -211,7 +216,6 @@ const MainEditor = () => {
           editorState={editorState}
           handleKeyCommand={handleKeyCommand}
           onChange={onChange}
-          //onChange={setEditorState}
           onTab={onTab}
           placeholder="Write Something..."
           ref={editor}
@@ -219,11 +223,6 @@ const MainEditor = () => {
         />
       </div>
       <div className="CommentAreaContainer">{getComments()}</div>
-      {/* <svg id='connector_canvas' style={{position: "absolute", 
-                                        width: "100%", 
-                                        }}>
-          <line x1="50" y1="50" x2="350" y2="50" stroke="blue"/>
-        </svg> */}
     </div>
   </div>
 }
