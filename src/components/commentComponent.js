@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Icon, Input } from 'semantic-ui-react'
 import TextareaAutosize from 'react-textarea-autosize';
-import OutsideAlerter from './outsideAlerter';
 import './commentComponent.css';
 
 /**
@@ -20,21 +19,19 @@ const Comment = (props) => {
     const refWrapper = useRef(null);
     
     useEffect(() => {
-        if (!isNewHandled) {
-            refCommentTxtArea.current.focus();
-            setHandledNew(true);
-        }
-    })
-
-    useEffect(() => {
         /**
          * Alert if clicked on outside of element
          */
         function handleClickOutside(event) {
-          //console.log('[handleClickOutside]', commentVal, 'isEditMode', isEditMode, refWrapper.current && !refWrapper.current.contains(event.target));
+          console.log('[handleClickOutside]', commentVal, 'isEditMode', isEditMode, refWrapper.current && !refWrapper.current.contains(event.target));
           if (refWrapper.current && !refWrapper.current.contains(event.target) && isEditMode) {
-            //alert("You clicked outside of me!" + commentVal);
-            setEditMode(false);
+              if (!isNewHandled) {
+                refCommentTxtArea.current.focus();
+                setHandledNew(true);                
+              }
+              else {
+                setEditMode(false);
+              }
           }
         }
         // Bind the event listener
@@ -43,7 +40,7 @@ const Comment = (props) => {
           // Unbind the event listener on clean up
           document.removeEventListener("click", handleClickOutside);
         };
-      }, [refWrapper, isEditMode]);
+      }, [refWrapper, isEditMode, isNewHandled]);
 
     const onFocusHandler = () => {
         console.log('Focused comment', commentVal);
