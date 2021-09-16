@@ -1,7 +1,7 @@
 .CommentContainer {
     background-color: #fffafa;
-    border: 1px solid blue;
-    border-left: 3px solid blue;    
+    /* border: 1px solid blue;
+    border-left: 3px solid blue;     */
     border-radius: 5px;
     margin-bottom: 5px;
     /* box-shadow: 2px 2px 2px #888888; */
@@ -10,11 +10,12 @@
 
 .CommentHeader {
     background-color: #ddd;
-    padding: 0px 5px 0px 5px;
+    padding: 1px 5px 1px 5px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     font-weight: 500;
     font-size: 12px;
+    vertical-align: middle;
 }
 
 .CommentHeaderCaption {
@@ -35,10 +36,11 @@
 
 .CommentHeaderColorInput {
     width: 80px;
-    border: 0px ;
-    margin: 1px;
+    height: 18px;
+    border: 0px;
+    margin: 0px;
     font-size: 12px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;    
 }
 
 .CommentHeaderColorInput:focus {
@@ -48,8 +50,8 @@
 
 .CommentBody {
     /* border: 1px solid red; */
-    min-height: 1em;
-    padding: 5px;
+    /* min-height: 1em;
+    padding: 1px; */
 }
 
 .CommentTextArea {

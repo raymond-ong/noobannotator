@@ -9,6 +9,7 @@ import BlockStyleControls, {getBlockStyle} from './richTextComponents/blockCompo
 import InlineStyleControls from './richTextComponents/inlineComponents';
 import AnnotatorControls, {findLinkEntities, Link} from './richTextComponents/annotatorComponents';
 import Comment from './components/commentComponent';
+import {colorToRgbString} from './helpers/colorHelper';
 
 const MainEditor = () => {
   const {state, dispatch} = useContext(store); // Warning: everytime there is a change in the store, will force a re-render
@@ -56,6 +57,7 @@ const MainEditor = () => {
       let line2Elem = document.getElementById(`svg-line2-${key}`);
       let divElem = document.getElementById(`comment-div-${key}`);
       let svgElem = document.getElementById(`svg-span-${key}`);
+      let color = value.data.color;
       
       if (!spanElem) {
         console.log('[UseEffect] span iter', key, value.data.comment, 'not found');
@@ -99,6 +101,11 @@ const MainEditor = () => {
       line2Elem.setAttribute("x2", editorRight-paddingRightLeft + 25);
       line2Elem.setAttribute("y1", 0.5 + offsetEditorAndSpan);
       line2Elem.setAttribute("y2", divRect.top - editorRect.top);
+
+      // Set the colors
+      line1Elem.setAttribute("stroke", colorToRgbString(color, 0.5));
+      line2Elem.setAttribute("stroke", colorToRgbString(color, 0.5));
+      spanElem.style.backgroundColor = colorToRgbString(color, 0.3);
     });
     console.log("UseEffect for comments End...");
   }, [commentRerender]);
@@ -185,7 +192,6 @@ const MainEditor = () => {
       ret.push(<Comment 
         key={key} 
         entityKey={key} 
-        color="blue" 
         parentRerender={() => setCommentReRender(!commentRerender)}
         parentUpdateComment={updateComment}
         {...value.data}

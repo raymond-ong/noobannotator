@@ -41,8 +41,9 @@ export function findLinkEntities(contentBlock, callback, contentState) {
 
   // Set Pointer-Events to none for the SVG to avoid interfering with the mouse cursor and events
 export const Link = (props) => {
-    console.log("NEW LINKK!!!!", props);
-    const {url} = props.contentState.getEntity(props.entityKey).getData();
+  console.log("NEW LINKK!!!!", props);
+  const {url} = props.contentState.getEntity(props.entityKey).getData();
+
     return (
         <>
         <span id={'comment-span-'+props.entityKey} style={styles.link}>
@@ -52,12 +53,10 @@ export const Link = (props) => {
                                                 width: "calc(100% + 100px)", 
                                                 height: "500px", 
                                                 left: "0", 
-                                                // top: "-50px",
                                                 cursor: "default", 
                                                 zIndex: "100",
                                                 marginRight: "-200px",
                                                 display: "float",
-                                                // border: "1px solid magenta", 
                                                 pointerEvents: "none"}}>
           <line id={'svg-line1-'+props.entityKey} x1="0" y1="0" x2="350" y2="0" stroke="rgba(0, 0, 255, 0.4)" strokeWidth="1"/>
           <line id={'svg-line2-'+props.entityKey} x1="0" y1="0" x2="350" y2="0" stroke="rgba(0, 0, 255, 0.4)" strokeWidth="1"/>
@@ -92,7 +91,8 @@ const AnnotatorControls = (props) => {
           'MUTABLE',
           {
             comment: commentText,
-            isNew: true, // TODO: Set this to false after setting focus
+            color: 'black', // default
+            isNew: true, 
           }
         );
         const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
