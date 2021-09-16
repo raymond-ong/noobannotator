@@ -1,5 +1,8 @@
 export const colorToRgbString = (colorString, opacity) => {
     // try to convert to hex first
+    if (!colorString) {
+        return `rgba(0, 0, 0, ${opacity})`;
+    }
     let hexVal = colorString;
     let lowerCase = colorString.toLowerCase();
     if (lowerCase in colorHexMap) {

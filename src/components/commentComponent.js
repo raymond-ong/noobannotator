@@ -21,7 +21,7 @@ const Comment = (props) => {
 
     let styleCommentContainer = {
         border: `1px solid ${colorToRgbString(colorVal, 1)}`,
-        borderLeft: `3px solid ${colorToRgbString(colorVal, 1)}`
+        borderLeft: `4px solid ${colorToRgbString(colorVal, 1)}`
     }
 
     let styleColorIcon = {
