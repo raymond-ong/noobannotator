@@ -19,10 +19,9 @@ const customStyles = {
   
 const FileManager3  = (props) => {
     console.log('[FileManager3] render');
-    const [deletedItem, setDeletedItem] = useState(false);
+	const [deletedItem, setDeletedItem] = useState(false);
     const [selVal, setSelVal] = useState(null);
     const [showMenu, setShowMenu] = useState(false);
-    const [focusedVal, setFocusedVal] = useState(false);
     const selRef = useRef(null);
     //const [options, setOptions] = useState(optionsFood);
 
@@ -32,9 +31,10 @@ const FileManager3  = (props) => {
         console.log(`action: ${actionMeta.action}`);
         console.groupEnd();
         if (deletedItem) {
+            setDeletedItem(false);
+            console.log('handleChange detected deletedItem...returning early');
             return;
         }
-
         if (actionMeta.action === 'create-option') {
             //setOptions([...options, newValue]);
             options.push(newValue);
@@ -42,7 +42,6 @@ const FileManager3  = (props) => {
         else if (actionMeta.action === 'select-option') {
             setSelVal(newValue);
             setShowMenu(false);
-            setFocusedVal(false);
             selRef.current.blur();
         }
         else if (actionMeta.action === 'clear') {
@@ -66,9 +65,15 @@ const FileManager3  = (props) => {
         if (findIndex < 0) {
             return;
         }
+
+        if (selVal && selVal.value === optVal) {
+            console.log("set value to null as deleting selected item");
+            setSelVal(null);
+        }
         options.splice(findIndex, 1);
-        setDeletedItem(true);
-        e.preventDefault();
+		setDeletedItem(true);
+        //e.preventDefault(); // might not be needed anymore....setDeletedItem updates deletedItem just in time for handleChange() using onMouseDown instead of onClick
+        console.log("Done removing", optVal);
     }
 
     const formatOptionLabel = ({ value, label, }, metadata) => (
@@ -103,12 +108,10 @@ const FileManager3  = (props) => {
         menuIsOpen={showMenu}
         onBlur={() => {
             setShowMenu(false);
-            setFocusedVal(false);
         }}
         blurInputOnSelect={false}
         onFocus={() => {
             setShowMenu(true);
-            setFocusedVal(true);
         }}
         ref={selRef}
     />
