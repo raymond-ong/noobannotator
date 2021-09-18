@@ -11,10 +11,76 @@ let options = [
   ]
 
 const customStyles = {  
-     option: (provided, state) => ({
-        ...provided,
-        color: state.isSelected ? 'darkgray' : 'gray',
-      }),
+    option: (provided, state) => ({
+    ...provided,
+    color: state.isSelected ? 'darkgray' : 'gray',
+    }),
+    container: base => ({ 
+        ...base, 
+        fontSize: '14px',
+        // padding: '0px'
+    }),
+    control: base => ({ 
+        ...base, 
+        // border: '1px solid blue',
+        // padding: '0px',
+        minHeight: '30px'
+    }),
+    valueContainer: base => ({ 
+        ...base, 
+        // border: '1px solid pink',
+        paddingTop: '0px',
+        paddingBottom: '0px',
+        height: '100%'
+    }),
+    singleValue: base => ({ 
+        ...base, 
+        marginTop: '0px',
+        marginBottom: '0px',
+    }),
+    indicatorsContainer: base => ({ 
+        ...base, 
+        // padding: '0px',
+    }),
+    indicatorSeparator: base => ({ 
+        ...base, 
+        height: '100%',
+        marginTop: '0px',
+        marginBottom: '0px',
+        // paddingTop: '10px',
+        // paddingBottom: '10px',
+        // width: '1px',
+        // border: '0px',
+        // boxSizing: 'content-sizing'
+    }),   
+    clearIndicator : base => ({ 
+        ...base, 
+        // height: '100%',
+        marginTop: '0px',
+        marginBottom: '0px',
+        paddingTop: '0px',
+        paddingBottom: '0px',
+        // width: '1px',
+        // border: '0px',
+        // boxSizing: 'content-sizing'
+    }),   
+    dropdownIndicator: base => ({ 
+        ...base, 
+        paddingTop: '0px',
+        paddingBottom: '0px',
+        marginTop: '0px',
+        marginBottom: '0px',
+    }),
+    // menuPortal: base => ({ ...base, zIndex: 9999 }),
+    // menu: provided => ({ ...provided, zIndex: "9999 !important" }),
+    input: () => ({        
+        margin: '0px'
+    }),
+    // control: () => ({
+    //     // none of react-select's styles are passed to <Control />
+    //     fontSize: 12,
+    //     width: 300
+    //   }),
 }
   
 const FileManager3  = (props) => {
@@ -23,7 +89,12 @@ const FileManager3  = (props) => {
     const [selVal, setSelVal] = useState(null);
     const [showMenu, setShowMenu] = useState(false);
     const selRef = useRef(null);
-    //const [options, setOptions] = useState(optionsFood);
+    const {state, dispatch} = useContext(store);
+
+    const onSaveClicked = () => {
+        console.log("onSaveClicked");
+        dispatch({type: 'save', data: {}});
+    }
 
     const handleChange = (newValue, actionMeta) => {
         console.group('Value Changed');
@@ -93,9 +164,10 @@ const FileManager3  = (props) => {
             Delete
           </div>}
         </div>
-      );
+      );      
 
-    return <CreatableSelect 
+    return <div className="FileManagerContainer">
+        <CreatableSelect 
         isClearable
         className="selectDropdown" 
         options={options} 
@@ -115,6 +187,8 @@ const FileManager3  = (props) => {
         }}
         ref={selRef}
     />
+    <div className="SaveButton" onClick={onSaveClicked}>Save</div>
+    </div>
         
 }
 
