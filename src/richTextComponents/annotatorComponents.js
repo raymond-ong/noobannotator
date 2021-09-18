@@ -107,6 +107,7 @@ const AnnotatorControls = (props) => {
           nextEditorState.getSelection(), entityKey 
         );
         props.onChange(nextEditorState);
+        props.parentRerender();
         console.log('confirmLink after onChange');
         // logState();
       }

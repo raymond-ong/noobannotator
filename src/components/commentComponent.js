@@ -46,10 +46,12 @@ const Comment = (props) => {
               if (!isNewHandled) {
                 refCommentTxtArea.current.focus();
                 setHandledNew(true);                
+                console.log('[handleClickOutside] processing for new components done');
               }
               else {
                 setEditMode(false);
                 props.parentRerender();
+                console.log('[handleClickOutside] processing for non-new components done');
               }
           }
         }

@@ -11,6 +11,8 @@ import AnnotatorControls, {findLinkEntities, Link} from './richTextComponents/an
 import Comment from './components/commentComponent';
 import {colorToRgbString} from './helpers/colorHelper';
 
+const testVal = 1;
+
 const MainEditor = () => {
   const {state, dispatch} = useContext(store); // Warning: everytime there is a change in the store, will force a re-render
   console.log('MainEditor render', state);
@@ -37,22 +39,31 @@ const MainEditor = () => {
   // TODO: may not be needed if we use proper reducer
   useEffect(() => {
     console.log("useEffect for file name changes:", state.docCurreFileName);
-    //setEditorState(getInitialState());
+    setEditorState(getInitialState());
     // TODO: remove this for now as this causes unnecessary rerender...anyways, we will refactor the file loading/saving machanism
+    // Can use useRef to skip initial render
+    // https://medium.com/swlh/prevent-useeffects-callback-firing-during-initial-render-the-armchair-critic-f71bc0e03536
+    // TODO2: Need to wipe out all entities when document is changed...or use a different way of travering the entities (via convertToRaw)
   }, [state.docCurreFileName]);
 
+  useEffect(() => {
+    console.log("useEffect testVal");
+  }, [testVal]);
+
+
   // If comment changes, need to redraw the lines to make sure they are still pointing to the correct coordinates
-  const [commentRerender, setCommentReRender] = useState(false);
-  const [editorState, setEditorState] = React.useState(() => getInitialState()); // pass in a function to avoid re-running the function unnecessarily
+  const [commentRerender, setCommentReRender] = useState(0);
+  const [editorState, setEditorState] = useState(() => getInitialState()); // pass in a function to avoid re-running the function unnecessarily
   console.log('MainEditor', convertToRaw(editorState.getCurrentContent()));
 
 
   // For drawing line or repositioning comment blocks    
-  useEffect(() => {
-    
+  useEffect(() => {    
     let currContent = editorState.getCurrentContent();
     let blocks = currContent.getBlockMap();
     let entities = currContent.getAllEntities();    
+    //console.log("===========UseEffect for All comments Start...===========", 'rerender', commentRerender);
+    console.log("===========UseEffect for All comments Start...===========", 'entities count', entities.count());
     let editorElem = document.getElementById('RichEditor-editor');
     entities.forEach((value, key, map) => {      
       let spanElem = document.getElementById(`comment-span-${key}`);
@@ -118,12 +129,12 @@ const MainEditor = () => {
       spanElem.style.backgroundColor = colorToRgbString(color, 0.3);      
     });    
     console.log("===========UseEffect for comments End...===========");
-  }, [commentRerender, editorState]);
+  }, [commentRerender, editorState]); // Note: editorState added to fix issue where user edited some text....but it has side effect about additional re-render
    
   const onChange = (editState) => {    
     setEditorState(editState);
     const contentState = editorState.getCurrentContent();
-    dispatch({type: 'editorStateChanged', data: contentState});
+    dispatch({type: 'editorStateChanged', data: contentState}); // dispatch so that it's ready to be saved
   }
 
   const editor = React.useRef(null);
@@ -186,6 +197,7 @@ const MainEditor = () => {
     const contentState = editorState.getCurrentContent();
     contentState.replaceEntityData(key, data)
     EditorState.set(editorState, { currentContent: contentState });
+    setCommentReRender(value => value + 1); // use the parameter passed instead of directly referencing commentRerender state value as it might be stale due to closure
     onChange(editorState);
   }
 
@@ -209,7 +221,7 @@ const MainEditor = () => {
             ret.push(<Comment 
               key={entityKey} 
               entityKey={entityKey} 
-              parentRerender={() => setCommentReRender(!commentRerender)}
+              parentRerender={() => setCommentReRender(value => value + 1) }
               parentUpdateComment={updateComment}
               {...entityObj.data}
               />);
@@ -254,6 +266,7 @@ const MainEditor = () => {
       <AnnotatorControls 
         editorState={editorState}
         onChange={setEditorState}
+        parentRerender={() => setCommentReRender(!commentRerender)}
       />
     </div>
     <div className="EditorAndCommentContainer">

@@ -1,5 +1,5 @@
 import React, {createContext, useReducer} from 'react';
-import {localSaveContent} from './helpers/localStorageHelper.js';
+import {localSaveContent, locaDeleteContent} from './helpers/localStorageHelper.js';
 import {localListDocs} from './helpers/localStorageHelper.js'
 //
 import {EditorHelper} from './helpers/editorHelper';
@@ -29,6 +29,7 @@ const GetInitialState = () => {
         editorDirty: false,
         /**
          * To set the Save button text as either "Save" or "Save New" when user inputs something 
+         * TODO: can be deleted already as we have a new UI
          */
         isDocNameNew: false,
         /**
@@ -63,7 +64,7 @@ const StateProvider = ( { children } ) => {
       switch(action.type) {
         case 'save':
             console.log("[reducer] save");
-            const newStateSave = {...state}// do something with the action
+            const newStateSave = {...state};
             let rawContent = EditorHelper.convertToRawContent(state.editorContent);
             let newDocs = localSaveContent(rawContent, state.docCurreFileName);
             if (newStateSave.isDocNameNew) {
@@ -75,7 +76,7 @@ const StateProvider = ( { children } ) => {
             return newStateSave;
         case 'editorStateChanged':
             console.log("[reducer] editorStateChanged");
-            const newStateEditor = {...state}// do something with the action
+            const newStateEditor = {...state}
             newStateEditor.editorContent = action.data;
             return newStateEditor;
         case 'docInputChanged':
@@ -85,14 +86,29 @@ const StateProvider = ( { children } ) => {
             if (isDocNameNew === state.isDocNameNew && fileName === state.docCurreFileName) {
                 return state; // optimize
             }
-            const newStateDocName = {...state}// do something with the action
+            const newStateDocName = {...state}
             newStateDocName.isDocNameNew = isDocNameNew;
             newStateDocName.docCurreFileName = fileName;        
 
             // [2] Load the existing document that matches (TODO: should not come here if there are unsaved changes)
             EditorHelper.setContent(newStateDocName, fileName);
 
-            return newStateDocName;            
+            return newStateDocName;
+        case 'selectedDocChanged':
+            let selectedDocName = action.data;
+            console.log("[reducer] selectedDocChanged", selectedDocName);
+            const newStateDocChanged = {...state};
+            newStateDocChanged.docCurreFileName = selectedDocName;
+            EditorHelper.setContent(newStateDocChanged, selectedDocName);
+
+            return newStateDocChanged
+        case 'delete':
+            let deletedDoc = action.data;
+            const newStateDelete = {...state};
+            console.log("[reducer] Doc to be deleted", deletedDoc);
+            let docsAfterDelete = locaDeleteContent(deletedDoc);
+            newStateDelete.docs = docsAfterDelete;
+            return newStateDelete;
         default:
           throw new Error();
           console.log('Reducer detected Save');

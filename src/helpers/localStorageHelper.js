@@ -36,8 +36,19 @@ const createOrReplaceDocument = (savedDocs, name, docContent) => {
     }
 }
 
-const locaLoadContent = (docName) => {
+export const locaDeleteContent = (docName) => {
+    let savedDocuments = [];
+    let savedLayoutsStr = localStorage.getItem(STORAGE_DOC_NAME);
+    if (savedLayoutsStr !== null) {
+        savedDocuments = JSON.parse(savedLayoutsStr)
+    }
 
+    let indexFind = savedDocuments.findIndex(d => d.name === docName);
+    if (indexFind > 0) {
+        savedDocuments.splice(indexFind, 1);
+    }
+
+    return savedDocuments;
 }
 
 export const localListDocs = () => {
