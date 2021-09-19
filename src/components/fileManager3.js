@@ -152,7 +152,7 @@ const FileManager3  = (props) => {
               marginLeft: "auto", // right-align
               color: "white", 
               backgroundColor: "rgba(255,0,0,0.8)",
-              fontSize: "10px",
+              fontSize: "11px",
               borderRadius: "3px",
               padding: "3px",
               cursor: "pointer",              
@@ -165,7 +165,7 @@ const FileManager3  = (props) => {
               marginLeft: "auto", // right-align
               color: "white", 
               backgroundColor: "rgba(50,150,50,0.8)",
-              fontSize: "10px",
+              fontSize: "11px",
               borderRadius: "3px",
               padding: "3px",          
                }}>

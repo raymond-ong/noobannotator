@@ -12,10 +12,11 @@
     background-color: #ddd;
     padding: 1px 5px 1px 5px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 2fr;
     font-weight: 500;
     font-size: 12px;
     vertical-align: middle;
+    height: 25px;
 }
 
 .CommentHeaderCaption {
@@ -25,6 +26,8 @@
 .CommentHeaderColor {
     margin-left: auto; 
     margin-right: 0;    
+    display: flex;
+    align-items: center;
 }
 
 .ColorField {
@@ -89,4 +92,19 @@
 
 .CommentFooterButtonDelete {
     background-color: #b99;
+}
+
+.deleteCommentBtn {
+    border: 1px soild red;
+    border-radius: 5px;
+    background-color: rgba(255, 0, 0, 0.8);
+    color: white;
+    margin: 2px 2px 2px 5px;
+    padding: 0px;
+    height: calc(100% - 2px);
+    width: 45px;
+    text-align: center;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
 }

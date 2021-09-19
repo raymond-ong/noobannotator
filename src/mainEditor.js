@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
-import {Editor, EditorState, RichUtils, convertToRaw, convertFromRaw, getDefaultKeyBinding, CompositeDecorator} from 'draft-js';
+import {Editor, EditorState, RichUtils, convertToRaw, convertFromRaw, getDefaultKeyBinding, CompositeDecorator, SelectionState} from 'draft-js';
 import { store } from './store.js';
 import 'draft-js/dist/Draft.css';
 import './mainEditor.css';
@@ -55,6 +55,32 @@ const MainEditor = () => {
     onChange(editorState);
   }
 
+  const deleteComment = (entityKey, blockKey) => {
+    const contentState = editorState.getCurrentContent();
+    let blockObj = contentState.getBlockForKey(blockKey);
+    blockObj.findEntityRanges(
+      (character) => {
+        const currEntityKey = character.getEntity();
+        if (!currEntityKey || currEntityKey !== entityKey) {
+          return false;
+        }
+
+        return true;
+      },
+      (start, end) => {
+        console.log('found entity yo remove', start, end);
+        var selectionState = SelectionState.createEmpty(blockKey);
+        var updatedSelection = selectionState.merge({
+          focusOffset: end,
+          anchorOffset:start,
+        });
+        let updatedState = RichUtils.toggleLink(editorState, updatedSelection, null);
+        console.log("new state after delete", convertToRaw(updatedState.getCurrentContent()));
+        onChange(updatedState);
+      }
+    );
+  }
+
   const getCommentsAndEntities = () => {
     let currContent = editorState.getCurrentContent();
     let blocks = currContent.getBlockMap();
@@ -63,6 +89,7 @@ const MainEditor = () => {
   
     // traverse each block
     blocks.forEach((block) => {
+      const blockKey = block.key;
       block.findEntityRanges(
         (character) => {
           const entityKey = character.getEntity();
@@ -75,11 +102,15 @@ const MainEditor = () => {
             let newObj = {
               key: entityKey,
               entity: entityObj,
+              blockKey: blockKey,
               div: <Comment 
               key={entityKey} 
               entityKey={entityKey} 
+              entity={entityObj}
+              blockKey={blockKey}
               parentRerender={() => setCommentReRender(value => value + 1) }
               parentUpdateComment={updateComment}
+              parentDeleteComment={deleteComment}
               {...entityObj.data}
               />
             }
@@ -174,10 +205,9 @@ const MainEditor = () => {
     console.log("===========UseEffect for comments End...===========");
   }, [commentRerender, editorState]); // Note: editorState added to fix issue where user edited some text....but it has side effect about additional re-render
    
-  const onChange = (editState) => {    
+  const onChange = (editState) => {       
     setEditorState(editState);
-    const contentState = editorState.getCurrentContent();
-    dispatch({type: 'editorStateChanged', data: contentState}); // dispatch so that it's ready to be saved
+    dispatch({type: 'editorStateChanged', data: editState.getCurrentContent()}); // dispatch so that it's ready to be saved    
   }
 
   const editor = React.useRef(null);

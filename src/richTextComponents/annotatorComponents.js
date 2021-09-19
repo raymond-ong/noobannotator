@@ -111,8 +111,8 @@ const AnnotatorControls = (props) => {
         console.log('confirmLink after onChange');
         // logState();
       }
-    
-    /** Link/Comment End */
+      /** Link/Comment End */
+
     
 
     const onClick = (style) => {

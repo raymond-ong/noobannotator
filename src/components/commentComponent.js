@@ -90,6 +90,10 @@ const Comment = (props) => {
         props.parentUpdateComment(props.entityKey, newData);
     }
 
+    const handleDeleteComment = () => {
+        props.parentDeleteComment(props.entityKey, props.blockKey);
+    }
+
     const getCommentHeaderElement = (isEditMode) => {
         if (!isEditMode) {
             return null;
@@ -102,7 +106,8 @@ const Comment = (props) => {
                         <input className="CommentHeaderColorInput" placeholder="Color" onChange={onColorChanged} defaultValue={colorVal}></input>
                         <Icon style={styleColorIcon} name="square"/>
                     </div>
-                </div>                    
+                    <div className="deleteCommentBtn" onClick={handleDeleteComment}>Delete</div>
+                </div>                                    
             </div>;
     }
    
