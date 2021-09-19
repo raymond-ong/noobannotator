@@ -97,8 +97,10 @@ const FileManager3  = (props) => {
         }
         if (actionMeta.action === 'create-option') {
             //setOptions([...options, newValue]);
-            options.push(newValue);
-            dispatch({type: 'createdDoc', data: {}});
+            optionsVal.push(newValue);
+            setOptions(optionsVal);
+            setSelVal(newValue);
+            dispatch({type: 'save', data: {newFileName: newValue.value}});
         }
         else if (actionMeta.action === 'select-option') {
             setSelVal(newValue);
@@ -114,10 +116,10 @@ const FileManager3  = (props) => {
         // console.group('Input Changed');
         // console.log(inputValue);
         // console.log(`action: ${actionMeta.action}`);
-        if (actionMeta.action === 'create-option') {
-            //setOptions([...options, inputValue]);
-            options.push(inputValue);
-        }
+        // if (actionMeta.action === 'create-option') {
+        //     //setOptions([...options, inputValue]);
+        //     options.push(inputValue);
+        // }
         //console.groupEnd();
       };
 
@@ -140,10 +142,12 @@ const FileManager3  = (props) => {
         console.log("Done removing", optVal);
     }
 
-    const formatOptionLabel = ({ value, label, }, metadata) => (
-        <div style={{ display: "flex" }}>
+    const formatOptionLabel = ({ value, label, }, metadata) => {
+        const isCreateMenuItem = metadata.inputValue && metadata.inputValue.length > 0 && value !== label;
+        
+        return <div style={{ display: "flex" }}>
           <div>{label}</div>
-          {metadata.context === 'menu' &&
+          {metadata.context === 'menu' && !isCreateMenuItem &&
           <div style={{ 
               marginLeft: "auto", // right-align
               color: "white", 
@@ -156,10 +160,25 @@ const FileManager3  = (props) => {
                onMouseDown={ (e) => handleDelete(e, value)}>
             Delete
           </div>}
+          {metadata.context === 'menu' && isCreateMenuItem &&
+          <div style={{ 
+              marginLeft: "auto", // right-align
+              color: "white", 
+              backgroundColor: "rgba(50,150,50,0.8)",
+              fontSize: "10px",
+              borderRadius: "3px",
+              padding: "3px",          
+               }}>
+            New
+          </div>}
         </div>
-      );   
+        };   
           
     console.log("File Current Value:", selVal);
+    let classBtnSave = "SaveButton";
+    if (!selVal) {
+        classBtnSave += " btnDisabled"
+    }
 
     return <div className="FileManagerContainer">
         <CreatableSelect 
@@ -184,7 +203,7 @@ const FileManager3  = (props) => {
         ref={selRef}
         defaultValue={selVal}
     />
-    <div className="SaveButton" onClick={onSaveClicked}>Save</div>
+    <div className={classBtnSave} onClick={selVal && onSaveClicked}>Save</div>
     </div>
         
 }

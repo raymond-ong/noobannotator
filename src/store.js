@@ -65,35 +65,33 @@ const StateProvider = ( { children } ) => {
         case 'save':
             console.log("[reducer] save");
             const newStateSave = {...state};
+            let fileName = action.data.newFileName ? action.data.newFileName : state.docCurreFileName;
             let rawContent = EditorHelper.convertToRawContent(state.editorContent);
-            let newDocs = localSaveContent(rawContent, state.docCurreFileName);
-            if (newStateSave.isDocNameNew) {
-                newStateSave.isDocNameNew = false;
-                newStateSave.docs = newDocs;
-            }
+            let newDocs = localSaveContent(rawContent, fileName);
+            newStateSave.docs = newDocs;
+            newStateSave.docCurreFileName = fileName;
 
-            //localSaveContent(state.editorContent, state.docCurreFileName);
             return newStateSave;
         case 'editorStateChanged':
             console.log("[reducer] editorStateChanged");
             const newStateEditor = {...state}
             newStateEditor.editorContent = action.data;
             return newStateEditor;
-        case 'docInputChanged':
+        //case 'docInputChanged': // todo: remove this
             // [1] Rename Save/Save New button
-            let {isDocNameNew, fileName} = action.data;
-            console.log("[reducer] docInputChanged", isDocNameNew, fileName);
-            if (isDocNameNew === state.isDocNameNew && fileName === state.docCurreFileName) {
-                return state; // optimize
-            }
-            const newStateDocName = {...state}
-            newStateDocName.isDocNameNew = isDocNameNew;
-            newStateDocName.docCurreFileName = fileName;        
+            // let {isDocNameNew, fileName} = action.data;
+            // console.log("[reducer] docInputChanged", isDocNameNew, fileName);
+            // if (isDocNameNew === state.isDocNameNew && fileName === state.docCurreFileName) {
+            //     return state; // optimize
+            // }
+            // const newStateDocName = {...state}
+            // newStateDocName.isDocNameNew = isDocNameNew;
+            // newStateDocName.docCurreFileName = fileName;        
 
-            // [2] Load the existing document that matches (TODO: should not come here if there are unsaved changes)
-            EditorHelper.setContent(newStateDocName, fileName);
+            // // [2] Load the existing document that matches (TODO: should not come here if there are unsaved changes)
+            // EditorHelper.setContent(newStateDocName, fileName);
 
-            return newStateDocName;
+            // return newStateDocName;
         case 'selectedDocChanged':
             let selectedDocName = action.data;
             console.log("[reducer] selectedDocChanged", selectedDocName);
@@ -108,6 +106,10 @@ const StateProvider = ( { children } ) => {
             console.log("[reducer] Doc to be deleted", deletedDoc);
             let docsAfterDelete = locaDeleteContent(deletedDoc);
             newStateDelete.docs = docsAfterDelete;
+            if (newStateDelete.docCurreFileName === deletedDoc) {
+                newStateDelete.docCurreFileName = null;
+                newStateDelete.editorContent = null;
+            }
             return newStateDelete;
         default:
           throw new Error();

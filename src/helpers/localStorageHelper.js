@@ -44,7 +44,7 @@ export const locaDeleteContent = (docName) => {
     }
 
     let indexFind = savedDocuments.findIndex(d => d.name === docName);
-    if (indexFind > 0) {
+    if (indexFind >= 0) {
         savedDocuments.splice(indexFind, 1);
     }
 
