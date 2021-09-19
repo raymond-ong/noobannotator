@@ -48,6 +48,7 @@ export const locaDeleteContent = (docName) => {
         savedDocuments.splice(indexFind, 1);
     }
 
+    localStorage.setItem(STORAGE_DOC_NAME, JSON.stringify(savedDocuments));
     return savedDocuments;
 }
 

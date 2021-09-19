@@ -75,6 +75,7 @@ const FileManager3  = (props) => {
         return docs.map((doc, index) => ({value: doc.name, label: doc.name}));
     }
     const options = getOptions(state.docs);
+    const [optionsVal, setOptions] = useState(options);
 
     const getDefaultVal = () => options && options.length > 0 ? options[options.length - 1] : null;
     const [selVal, setSelVal] = useState(getDefaultVal());
@@ -122,7 +123,7 @@ const FileManager3  = (props) => {
 
     const handleDelete = (e, optVal) => {
         console.log("Trying to delete ", optVal);
-        let findIndex = options.findIndex(opt => opt.value === optVal);
+        let findIndex = optionsVal.findIndex(opt => opt.value === optVal);
         if (findIndex < 0) {
             return;
         }
@@ -131,9 +132,10 @@ const FileManager3  = (props) => {
             console.log("set value to null as deleting selected item");
             setSelVal(null);
         }
-        options.splice(findIndex, 1);
+        optionsVal.splice(findIndex, 1);
+        setOptions(optionsVal);
 		setDeletedItem(true);
-        dispatch({type: 'delete', data: {item: optVal}});
+        dispatch({type: 'delete', data: optVal});
         //e.preventDefault(); // might not be needed anymore....setDeletedItem updates deletedItem just in time for handleChange() using onMouseDown instead of onClick
         console.log("Done removing", optVal);
     }
@@ -164,7 +166,7 @@ const FileManager3  = (props) => {
         placeholder="Select an item or type in a new file..."
         isClearable
         className="selectDropdown" 
-        options={options} 
+        options={optionsVal} 
         styles={customStyles}
         onChange={handleChange}
         onInputChange={handleInputChange}

@@ -11,8 +11,6 @@ import AnnotatorControls, {findLinkEntities, Link} from './richTextComponents/an
 import Comment from './components/commentComponent';
 import {colorToRgbString} from './helpers/colorHelper';
 
-const testVal = 1;
-
 const MainEditor = () => {
   const {state, dispatch} = useContext(store); // Warning: everytime there is a change in the store, will force a re-render
   console.log('MainEditor render', state);
@@ -46,46 +44,91 @@ const MainEditor = () => {
     // TODO2: Need to wipe out all entities when document is changed...or use a different way of travering the entities (via convertToRaw)
   }, [state.docCurreFileName]);
 
-  useEffect(() => {
-    console.log("useEffect testVal");
-  }, [testVal]);
-
-
   // If comment changes, need to redraw the lines to make sure they are still pointing to the correct coordinates
   const [commentRerender, setCommentReRender] = useState(0);
+
+  const updateComment = (key, data) => {
+    const contentState = editorState.getCurrentContent();
+    contentState.replaceEntityData(key, data)
+    EditorState.set(editorState, { currentContent: contentState });
+    setCommentReRender(value => value + 1); // use the parameter passed instead of directly referencing commentRerender state value as it might be stale due to closure
+    onChange(editorState);
+  }
+
+  const getCommentsAndEntities = () => {
+    let currContent = editorState.getCurrentContent();
+    let blocks = currContent.getBlockMap();
+    let entities = currContent.getAllEntities();
+    let ret = [];
+  
+    // traverse each block
+    blocks.forEach((block) => {
+      block.findEntityRanges(
+        (character) => {
+          const entityKey = character.getEntity();
+          if (!entityKey) {
+            return;
+          }
+          const entityObj = currContent.getEntity(entityKey);
+          if (entityKey !== null && currContent.getEntity(entityKey).getType() === 'LINK') {
+            console.log('[getComments by block]', entityObj);
+            let newObj = {
+              key: entityKey,
+              entity: entityObj,
+              div: <Comment 
+              key={entityKey} 
+              entityKey={entityKey} 
+              parentRerender={() => setCommentReRender(value => value + 1) }
+              parentUpdateComment={updateComment}
+              {...entityObj.data}
+              />
+            }
+            ret.push(newObj);
+          }          
+        },
+        null
+      );    
+    });
+  
+    return ret;
+  }
+
   const [editorState, setEditorState] = useState(() => getInitialState()); // pass in a function to avoid re-running the function unnecessarily
   console.log('MainEditor', convertToRaw(editorState.getCurrentContent()));
+
+  const commentsAndEntities = getCommentsAndEntities(editorState);
 
 
   // For drawing line or repositioning comment blocks    
   useEffect(() => {    
-    let currContent = editorState.getCurrentContent();
-    let blocks = currContent.getBlockMap();
-    let entities = currContent.getAllEntities();    
+    // let currContent = editorState.getCurrentContent();
+    // let blocks = currContent.getBlockMap();
+    let entities = commentsAndEntities;  
     //console.log("===========UseEffect for All comments Start...===========", 'rerender', commentRerender);
-    console.log("===========UseEffect for All comments Start...===========", 'entities count', entities.count());
+    console.log("===========UseEffect for All comments Start...===========", 'entities count', entities.length);
     let editorElem = document.getElementById('RichEditor-editor');
-    entities.forEach((value, key, map) => {      
+    entities.forEach(entObj => {    
+      const {key, entity} = entObj;
       let spanElem = document.getElementById(`comment-span-${key}`);
       let line1Elem = document.getElementById(`svg-line1-${key}`);
       let line2Elem = document.getElementById(`svg-line2-${key}`);
       let divElem = document.getElementById(`comment-div-${key}`);
       let svgElem = document.getElementById(`svg-span-${key}`);
-      let color = value.data.color;
+      let color = entity.data.color;
       
       if (!spanElem) {
-        console.log('[UseEffect] span iter', key, value.data.comment, 'not found');
+        console.log('[UseEffect] span iter', key, entity.data.comment, 'not found');
         return;
       }
       if (!divElem) {
-        console.log('[UseEffect] div iter', key, value.data.comment, 'not found');
+        console.log('[UseEffect] div iter', key, entity.data.comment, 'not found');
         return;
       }
 
-      console.log("===========UseEffect for comments Start...===========", value.data.comment);
+      console.log("===========UseEffect for comments Start...===========", entity.data.comment);
      
-      //console.log('[UseEffect] div iter', key, value.data.comment, divElem);
-      //console.log('[UseEffect] span iter', key, value.data.comment, spanElem);
+      //console.log('[UseEffect] div iter', key, entity.data.comment, divElem);
+      //console.log('[UseEffect] span iter', key, entity.data.comment, spanElem);
       let divRect = divElem.getBoundingClientRect();
       let spanRect = spanElem.getBoundingClientRect();    
       let editorRect = editorElem.getBoundingClientRect();    
@@ -193,65 +236,6 @@ const MainEditor = () => {
     }
   }
 
-  const updateComment = (key, data) => {
-    const contentState = editorState.getCurrentContent();
-    contentState.replaceEntityData(key, data)
-    EditorState.set(editorState, { currentContent: contentState });
-    setCommentReRender(value => value + 1); // use the parameter passed instead of directly referencing commentRerender state value as it might be stale due to closure
-    onChange(editorState);
-  }
-
-  const getComments = () => {
-    let currContent = editorState.getCurrentContent();
-    let blocks = currContent.getBlockMap();
-    let entities = currContent.getAllEntities();
-    let ret = [];
-
-    // traverse each block
-    blocks.forEach((block) => {
-      block.findEntityRanges(
-        (character) => {
-          const entityKey = character.getEntity();
-          if (!entityKey) {
-            return;
-          }
-          const entityObj = currContent.getEntity(entityKey);
-          if (entityKey !== null && currContent.getEntity(entityKey).getType() === 'LINK') {
-            console.log('[getComments by block]', currContent.getEntity(entityKey));
-            ret.push(<Comment 
-              key={entityKey} 
-              entityKey={entityKey} 
-              parentRerender={() => setCommentReRender(value => value + 1) }
-              parentUpdateComment={updateComment}
-              {...entityObj.data}
-              />);
-          }          
-        },
-        null
-      );    
-      // console.log('[getComments by block] block', block);
-      // if (!block.entityRanges || block.entityRanges.length == 0) {
-      //   return;
-      // }
-
-      // value.entityRanges.forEach(entity => {
-      //   let key = entity.key;
-      //   console.log('[getComments by block] entity', key, entities[key]);
-      // });      
-    });
-
-    // entities.forEach((value, key, map) => {
-    //   console.log('[getComments] iter', key, value.data.comment)
-    //   ret.push(<Comment 
-    //     key={key} 
-    //     entityKey={key} 
-    //     parentRerender={() => setCommentReRender(!commentRerender)}
-    //     parentUpdateComment={updateComment}
-    //     {...value.data}
-    //     />);
-    // });
-    return ret;
-  }
 
   return <div className="RichEditor-root">
     <div className="draftToolBar">
@@ -283,7 +267,7 @@ const MainEditor = () => {
           spellCheck={true}
         />
       </div>
-      <div className="CommentAreaContainer">{getComments()}</div>
+      <div className="CommentAreaContainer">{commentsAndEntities.map(ent => ent.div)}</div>
     </div>
   </div>
 }
