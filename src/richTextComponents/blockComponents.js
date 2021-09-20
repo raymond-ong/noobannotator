@@ -1,5 +1,4 @@
 import '../mainEditor.css';
-import { useState } from 'react';
 import StyleButton from '../components/styleButton';
 import Select from 'react-select';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,8 +7,8 @@ import * as faIcon from "@fortawesome/free-solid-svg-icons";
 const BLOCK_TYPES = [
 {label: 'Normal', style: 'normal'},
 {label: 'Blockquote', style: 'blockquote', icon: 'faQuoteLeft'},
-{label: 'UL', style: 'unordered-list-item', icon: 'faListOl'},
-{label: 'OL', style: 'ordered-list-item', icon: 'faListUl'},
+{label: 'Bulleted', style: 'unordered-list-item', icon: 'faListUl'},
+{label: 'Numbered', style: 'ordered-list-item', icon: 'faListOl'},
 {label: 'Code Block', style: 'code-block', icon: 'faCode'},
 {label: 'Header 1', style: 'header-one'},
 {label: 'Header 2', style: 'header-two'},
@@ -122,14 +121,13 @@ const BlockStyleControls = (props) => {
 
     const handleChange = (newValue, actionMeta) => {
       if (actionMeta.action === 'select-option') {
-          setSelVal(newValue);
           props.onToggle(newValue.value);
       }
     };
 
     const optionsList = getOptions();
-    const [selVal, setSelVal] = useState(blockType ==='unstyled' ? findOption('normal') : findOption(blockType));
-    console.log('BlockStyleControls', blockType, selVal);
+    let optionVal = blockType ==='unstyled' ? findOption('normal') : findOption(blockType);
+    console.log('BlockStyleControls', blockType, optionVal);      
 
     return (
         <div className="RichEditor-controls">
@@ -137,19 +135,9 @@ const BlockStyleControls = (props) => {
             options={optionsList}
             styles={customStyles}
             formatOptionLabel={formatOptionLabel}        
-            value={selVal}    
+            value={optionVal}    
             onChange={handleChange}
           />
-        {/* {BLOCK_TYPES.map((type) =>
-            <StyleButton
-            key={type.label}
-            active={type.style === blockType}
-            label={type.label}
-            icon={type.icon}
-            onToggle={props.onToggle}
-            style={type.style}
-            />
-        )} */}
         </div>
     );
 };
