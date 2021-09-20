@@ -216,7 +216,7 @@ const MainEditor = () => {
   }
 
   const toggleBlockType = (blockType) => {
-    setEditorState(
+    onChange(
       RichUtils.toggleBlockType(
         editorState,
         blockType
@@ -225,7 +225,7 @@ const MainEditor = () => {
   }
 
   const toggleInlineStyle = (inlineStyle) => {
-    setEditorState(
+    onChange(
       RichUtils.toggleInlineStyle(
         editorState,
         inlineStyle
@@ -269,19 +269,22 @@ const MainEditor = () => {
 
   return <div className="RichEditor-root">
     <div className="draftToolBar">
-      <BlockStyleControls
-        editorState={editorState}
-        onToggle={toggleBlockType}
-      />
-      <InlineStyleControls
-        editorState={editorState}
-        onToggle={toggleInlineStyle}
-      />
-      <AnnotatorControls 
-        editorState={editorState}
-        onChange={setEditorState}
-        parentRerender={() => setCommentReRender(!commentRerender)}
-      />
+      <div className="blockInlineContainer">
+        <AnnotatorControls 
+          editorState={editorState}
+          onChange={setEditorState}
+          parentRerender={() => setCommentReRender(!commentRerender)}
+        />
+        <InlineStyleControls
+          editorState={editorState}
+          onToggle={toggleInlineStyle}
+        />
+        <BlockStyleControls
+          editorState={editorState}
+          onToggle={toggleBlockType}
+        />
+
+      </div>
     </div>
     <div className="EditorAndCommentContainer">
       <div className={className} onClick={focusEditor} id={className}>

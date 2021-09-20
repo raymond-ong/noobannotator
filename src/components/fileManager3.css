@@ -4,12 +4,13 @@
     display: flex;
     /* border: 1px solid red; */
     overflow: visible;
+    font-family: "Arvo-Bold";
 }
 
 .selectDropdown {
     /* font-size: 14px; */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    width: 300px;
+    width: 320px;
     
 }
 
@@ -18,14 +19,13 @@
     background-color: lightgray;
     border-radius: 5px;
     color: #333;
-    padding: 3px;
+    padding: 5px 8px 5px 8px;
     cursor: pointer;
     float: right;
     margin-left: 5px;
     text-align: center;
     height: 100%;
     align-items: center; /* align vertical */
-    font-size: ;
   }
 
   .btnDisabled {

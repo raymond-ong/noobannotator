@@ -1,8 +1,9 @@
 import React, { useContext, useReducer, useState, useRef } from 'react';
 import { store } from '../store.js';
-import Select from 'react-select'
 import './fileManager3.css';
 import CreatableSelect from 'react-select/creatable';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSave, faFileAlt } from "@fortawesome/free-solid-svg-icons";
 
 // let options = [
 //     { value: 'chocolate', label: 'Chocolate'},
@@ -18,10 +19,11 @@ const customStyles = {
     container: base => ({ 
         ...base, 
         fontSize: '14px',
+        fontFamily: 'Arvo-Bold'
     }),
     control: base => ({ 
         ...base, 
-        minHeight: '30px'
+        minHeight: '30px',
     }),
     valueContainer: base => ({ 
         ...base, 
@@ -146,6 +148,7 @@ const FileManager3  = (props) => {
         const isCreateMenuItem = metadata.inputValue && metadata.inputValue.length > 0 && value !== label;
         
         return <div style={{ display: "flex" }}>
+          {!isCreateMenuItem && <FontAwesomeIcon icon={faFileAlt} style={{marginRight:"8px", marginTop: "2px"}}/>}
           <div>{label}</div>
           {metadata.context === 'menu' && !isCreateMenuItem &&
           <div style={{ 
@@ -156,6 +159,7 @@ const FileManager3  = (props) => {
               borderRadius: "3px",
               padding: "3px",
               cursor: "pointer",              
+              fontFamily: 'Segoe UI'
                }}
                onMouseDown={ (e) => handleDelete(e, value)}>
             Delete
@@ -167,12 +171,13 @@ const FileManager3  = (props) => {
               backgroundColor: "rgba(50,150,50,0.8)",
               fontSize: "11px",
               borderRadius: "3px",
-              padding: "3px",          
+              padding: "3px",      
+              fontFamily: 'Segoe UI'    
                }}>
             New
           </div>}
         </div>
-        };   
+    };   
           
     console.log("File Current Value:", selVal);
     let classBtnSave = "SaveButton";
@@ -203,7 +208,9 @@ const FileManager3  = (props) => {
         ref={selRef}
         defaultValue={selVal}
     />
-    <div className={classBtnSave} onClick={selVal && onSaveClicked}>Save</div>
+    <div className={classBtnSave} onClick={selVal && onSaveClicked}>
+        <FontAwesomeIcon icon={faSave}/>
+    </div>
     </div>
         
 }

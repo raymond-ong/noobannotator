@@ -14,10 +14,10 @@ const styles = {
   };
 
 const ANNOTATOR_TYPES = [
-    {label: 'Comment', style: 'Comment'},
-    {label: 'Yes', style: 'Yes'},
-    {label: 'No', style: 'No'},
-    {label: 'Emoji', style: 'Emoji', popup: true},    
+    {label: 'Comment', style: 'Comment', icon: 'faCommentDots', showIconAndLabel: true},
+    {label: 'Yes', style: 'Yes', icon: 'faCheck', showIconAndLabel: true},
+    {label: 'No', style: 'No', icon: 'faTimes', showIconAndLabel: true},
+    {label: 'Emoji', style: 'Emoji', popup: true, icon: 'faGrin', showIconAndLabel: true},    
 ];
 
 export function findLinkEntities(contentBlock, callback, contentState) {
@@ -174,9 +174,7 @@ const AnnotatorControls = (props) => {
                 position='bottom center'
                 // There is a bug in semantic ui react that popup does not show when putting react component. Workaround is to surround with a div
                 trigger={<span><StyleButton 
-                    label={type.label}
-                    style={type.style}
-                    key={type.label}
+                    {...type}
                     onToggle={onClick}
                     />
                     </span>}
@@ -184,9 +182,7 @@ const AnnotatorControls = (props) => {
             }
             else {
                 return <StyleButton 
-                label={type.label}
-                style={type.style}
-                key={type.label}
+                {...type}                
                 onToggle={onClick}
                 />
             }

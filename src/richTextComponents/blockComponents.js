@@ -1,18 +1,81 @@
 import '../mainEditor.css';
+import { useState } from 'react';
 import StyleButton from '../components/styleButton';
+import Select from 'react-select';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import * as faIcon from "@fortawesome/free-solid-svg-icons";
 
 const BLOCK_TYPES = [
-{label: 'H1', style: 'header-one'},
-{label: 'H2', style: 'header-two'},
-{label: 'H3', style: 'header-three'},
-{label: 'H4', style: 'header-four'},
-{label: 'H5', style: 'header-five'},
-{label: 'H6', style: 'header-six'},
-{label: 'Blockquote', style: 'blockquote'},
-{label: 'UL', style: 'unordered-list-item'},
-{label: 'OL', style: 'ordered-list-item'},
-{label: 'Code Block', style: 'code-block'},
+{label: 'Normal', style: 'normal'},
+{label: 'Blockquote', style: 'blockquote', icon: 'faQuoteLeft'},
+{label: 'UL', style: 'unordered-list-item', icon: 'faListOl'},
+{label: 'OL', style: 'ordered-list-item', icon: 'faListUl'},
+{label: 'Code Block', style: 'code-block', icon: 'faCode'},
+{label: 'Header 1', style: 'header-one'},
+{label: 'Header 2', style: 'header-two'},
+{label: 'Header 3', style: 'header-three'},
+{label: 'Header 4', style: 'header-four'},
+{label: 'Header 5', style: 'header-five'},
+{label: 'Header 6', style: 'header-six'},
 ];
+
+const customStyles = {  
+  option: (provided, state) => ({
+  ...provided,
+  color: state.isSelected ? 'darkgray' : 'gray',
+  }),
+  container: base => ({ 
+      ...base, 
+      fontSize: '14px',
+      width: '150px',
+      fontFamily: 'Arvo-Bold'
+  }),
+  control: base => ({ 
+      ...base, 
+      minHeight: '30px'
+  }),
+  valueContainer: base => ({ 
+      ...base, 
+      paddingTop: '0px',
+      paddingBottom: '0px',
+      height: '100%'
+  }),
+  singleValue: base => ({ 
+      ...base, 
+      marginTop: '0px',
+      marginBottom: '0px',
+  }),
+  indicatorsContainer: base => ({ 
+      ...base, 
+  }),
+  indicatorSeparator: base => ({ 
+      ...base, 
+      height: '100%',
+      marginTop: '0px',
+      marginBottom: '0px',
+  }),   
+  clearIndicator : base => ({ 
+      ...base, 
+      marginTop: '0px',
+      marginBottom: '0px',
+      paddingTop: '0px',
+      paddingBottom: '0px',
+  }),   
+  dropdownIndicator: base => ({ 
+      ...base, 
+      paddingTop: '0px',
+      paddingBottom: '0px',
+      marginTop: '0px',
+      marginBottom: '0px',
+  }),
+  input: () => ({        
+      margin: '0px'
+  }),
+  menu: base => ({ 
+    ...base, 
+    zIndex: 9999,
+  })
+}
 
 export const getBlockStyle = (block) => {
     switch (block.getType()) {
@@ -23,25 +86,70 @@ export const getBlockStyle = (block) => {
     }
   }
 
-const BlockStyleControls = (props) => {    
+const getOptions = () => {
+  return BLOCK_TYPES.map(block => {
+    return {
+    value: block.style,
+    label: block.label,
+    icon: block.icon
+    }
+  });
+}
+
+const formatOptionLabel = ({ value, label, icon}, metadata) => {
+  
+  return <div style={{ display: "flex" }}>
+    {icon && <FontAwesomeIcon style={{marginRight: '5px'}} icon={faIcon[icon]}/>}
+    <div>{label}</div>
+  </div>
+};   
+
+const BlockStyleControls = (props) => {        
     const {editorState} = props;
     const selection = editorState.getSelection();
     const blockType = editorState
         .getCurrentContent()
         .getBlockForKey(selection.getStartKey())
         .getType();
+    
+    const findOption = (optVal) => {
+      const indexFind = optionsList.findIndex(opt => opt.value === optVal);
+      if (indexFind < 0) {
+        return null;
+      }
+      return optionsList[indexFind];
+    }
+
+    const handleChange = (newValue, actionMeta) => {
+      if (actionMeta.action === 'select-option') {
+          setSelVal(newValue);
+          props.onToggle(newValue.value);
+      }
+    };
+
+    const optionsList = getOptions();
+    const [selVal, setSelVal] = useState(blockType ==='unstyled' ? findOption('normal') : findOption(blockType));
+    console.log('BlockStyleControls', blockType, selVal);
 
     return (
         <div className="RichEditor-controls">
-        {BLOCK_TYPES.map((type) =>
+          <Select 
+            options={optionsList}
+            styles={customStyles}
+            formatOptionLabel={formatOptionLabel}        
+            value={selVal}    
+            onChange={handleChange}
+          />
+        {/* {BLOCK_TYPES.map((type) =>
             <StyleButton
             key={type.label}
             active={type.style === blockType}
             label={type.label}
+            icon={type.icon}
             onToggle={props.onToggle}
             style={type.style}
             />
-        )}
+        )} */}
         </div>
     );
 };

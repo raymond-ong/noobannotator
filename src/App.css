@@ -23,6 +23,7 @@
 
 .AppTitleText {
   padding-left: 10px;
+  align-items: center; /* align vertical */
 }
 
 @font-face {

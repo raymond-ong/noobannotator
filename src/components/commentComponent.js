@@ -2,6 +2,9 @@ import { useState, useRef, useEffect } from 'react';
 import { Icon, Input } from 'semantic-ui-react'
 import TextareaAutosize from 'react-textarea-autosize';
 import {colorToRgbString} from '../helpers/colorHelper';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+
 import './commentComponent.css';
 
 /**
@@ -106,7 +109,9 @@ const Comment = (props) => {
                         <input className="CommentHeaderColorInput" placeholder="Color" onChange={onColorChanged} defaultValue={colorVal}></input>
                         <Icon style={styleColorIcon} name="square"/>
                     </div>
-                    <div className="deleteCommentBtn" onClick={handleDeleteComment}>Delete</div>
+                    <div className="deleteCommentBtn" onClick={handleDeleteComment}>
+                        <FontAwesomeIcon icon={faTimesCircle}/>
+                    </div>
                 </div>                                    
             </div>;
     }

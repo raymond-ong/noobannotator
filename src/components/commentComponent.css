@@ -17,6 +17,7 @@
     font-size: 12px;
     vertical-align: middle;
     height: 25px;
+    border-radius: 5px 5px 0px 0px;
 }
 
 .CommentHeaderCaption {
@@ -28,6 +29,7 @@
     margin-right: 0;    
     display: flex;
     align-items: center;
+    overflow: hidden;
 }
 
 .ColorField {
@@ -96,13 +98,15 @@
 
 .deleteCommentBtn {
     border: 1px soild red;
-    border-radius: 5px;
-    background-color: rgba(255, 0, 0, 0.8);
-    color: white;
+    border-radius: 10px;
+    /* background-color: rgba(255, 0, 0, 0.8); */
+    background-color: rgba(0,0,0,0);
+    color: red;
     margin: 2px 2px 2px 5px;
     padding: 0px;
     height: calc(100% - 2px);
-    width: 45px;
+    width: 20px;
+    font-size: medium;
     text-align: center;
     cursor: pointer;
     display: inline-block;

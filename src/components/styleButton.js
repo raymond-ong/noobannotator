@@ -1,5 +1,7 @@
 import React from 'react';
 import './styleButton.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import * as faIcon from "@fortawesome/free-solid-svg-icons";
 
 class StyleButton extends React.Component {
     constructor() {
@@ -9,6 +11,10 @@ class StyleButton extends React.Component {
         this.props.onToggle(this.props.style);
       };
     }
+
+    // renderIcon() {
+    //   return <FontAwesomeIcon icon={faCommentDots}/>
+    // }
 
     render() {
       let className = 'RichEditor-styleButton';
@@ -20,7 +26,8 @@ class StyleButton extends React.Component {
         <span className={className} 
           onMouseDown={this.onToggle}
         >
-          {this.props.label}
+          {this.props.icon && <FontAwesomeIcon icon={faIcon[this.props.icon]}/>}
+          {(this.props.showIconAndLabel || !this.props.icon) && `   ${this.props.label}`}
         </span>
       );
     }

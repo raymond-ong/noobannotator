@@ -4,6 +4,10 @@
   height: var(--toolbarHeight);
 }
 
+.blockInlineContainer {
+  display: flex;
+}
+
 /*Add top padding to offset the fixed title bar*/
 .RichEditor-root {
     /* background-color: rgba(255, 255, 255, 1); */
@@ -16,7 +20,7 @@
     padding-top: 3.3em;
     /* height: calc(100vh); */
     height: 100%;
-    --toolbarHeight: 110px;
+    --toolbarHeight: 40px;
   }
   
   .RichEditor-editor {
@@ -75,6 +79,8 @@
     margin-right: 16px;
     padding: 2px 0;
     display: inline-block;
+    font-weight: 600;
+    font-family: 'Arvo-Bold';
   }
   
 
