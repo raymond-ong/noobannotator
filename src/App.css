@@ -31,6 +31,11 @@
   src: local('Arvo-Bold'), url(./fonts/Arvo-Bold.ttf) format('opentype');
 }
 
+@font-face {
+  font-family: 'Pangolin-Regular';
+  src: local('Pangolin-Regular'), url(./fonts/Pangolin-Regular.ttf) format('opentype');
+}
+
 .SettingsArea {
   align-items: center;
   font-family: 'Segoe UI', serif;

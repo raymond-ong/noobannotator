@@ -138,6 +138,10 @@ const MainEditor = () => {
     //console.log("===========UseEffect for All comments Start...===========", 'rerender', commentRerender);
     console.log("===========UseEffect for All comments Start...===========", 'entities count', entities.length);
     let editorElem = document.getElementById('RichEditor-editor');
+    let editorChildElem = editorElem.firstChild;
+
+    let editorRect = editorElem.getBoundingClientRect();    
+    let editorChildRect = editorChildElem.getBoundingClientRect();    
     entities.forEach(entObj => {    
       const {key, entity} = entObj;
       let spanElem = document.getElementById(`comment-span-${key}`);
@@ -161,10 +165,11 @@ const MainEditor = () => {
       //console.log('[UseEffect] div iter', key, entity.data.comment, divElem);
       //console.log('[UseEffect] span iter', key, entity.data.comment, spanElem);
       let divRect = divElem.getBoundingClientRect();
-      let spanRect = spanElem.getBoundingClientRect();    
-      let editorRect = editorElem.getBoundingClientRect();    
+      let spanRect = spanElem.getBoundingClientRect();          
+      let svgRect = svgElem.getBoundingClientRect();    
 
       svgElem.style.top = `${editorRect.top - spanRect.top}px`;
+      //svgElem.style.left = '0px'
       svgElem.style.height = editorRect.height - 20; // -20 to account for paddings and new line, and prevent unnecessary scrollbar when the content is just few
       // console.log('span top', spanRect.top, 'result top:', svgElem.style.top);
       // console.log('top', svgElem.style.top, 'editorRect.height', editorRect.height, 'editorElem.clientHeight', editorElem.clientHeight);
@@ -175,32 +180,41 @@ const MainEditor = () => {
       // [b] editor right to div top
       let editorRight = editorElem.getBoundingClientRect().right;
       //console.log('editorElem right', editorRight, 'spanRect', spanRect, 'divRect', divRect);
-      //console.log('editorRect', editorRect);
-      // console.log('divRect', divRect.left);
-      // console.log('spanRect', spanRect.left);
+      console.log('editorRect', editorRect.left);
+      console.log('editorChildRect', editorChildRect.left);
+      //console.log('divRect', divRect.left);
+      console.log('spanRect', spanRect.left);
+      console.log('svgRect', svgRect.left);
       if (divRect.left === 679) {
         //debugger
       }
       //console.log('------', divRect.top - editorRect.top);
 
+       // for those with indents (e.g. bulletted), the svg element's left side is also indented
+       // -1 because editorChildRect and svgRect in normal scenario differs by 1
+       // -1 again to avoid overlap between the line and the outer edge of the span highlight
+      const svgOffset = svgRect.left - editorChildRect.left-2;
+
       const paddingLeft = 15;
       const paddingRightLeft = 20 + paddingLeft;
       // Use 0.5 to smooth out the lines -- SVG thingy
       const offsetEditorAndSpan = spanRect.top - editorRect.top;
-      line1Elem.setAttribute("x1", spanRect.right-paddingLeft);
-      line1Elem.setAttribute("x2", editorRight-paddingRightLeft);
+      line1Elem.setAttribute("x1", spanRect.right-paddingLeft-svgOffset);
+      line1Elem.setAttribute("x2", editorRight-paddingRightLeft-svgOffset);
       line1Elem.setAttribute("y1", 0.5 + offsetEditorAndSpan);
       line1Elem.setAttribute("y2", 0.5 + offsetEditorAndSpan);
 
-      line2Elem.setAttribute("x1", editorRight-paddingRightLeft);
-      line2Elem.setAttribute("x2", editorRight-paddingRightLeft + 25);
+      const divHeightHalf = divRect.height / 2;
+      line2Elem.setAttribute("x1", editorRight-paddingRightLeft-svgOffset);
+      line2Elem.setAttribute("x2", editorRight-paddingRightLeft + 23 - svgOffset);
       line2Elem.setAttribute("y1", 0.5 + offsetEditorAndSpan);
-      line2Elem.setAttribute("y2", divRect.top - editorRect.top);      
+      line2Elem.setAttribute("y2", divRect.top - editorRect.top + divHeightHalf);      
 
       // Set the colors
-      line1Elem.setAttribute("stroke", colorToRgbString(color, 0.5));
-      line2Elem.setAttribute("stroke", colorToRgbString(color, 0.5));
-      spanElem.style.backgroundColor = colorToRgbString(color, 0.3);      
+      line1Elem.setAttribute("stroke", colorToRgbString(color, 0.15));
+      line2Elem.setAttribute("stroke", colorToRgbString(color, 0.15));
+      spanElem.style.backgroundColor = colorToRgbString(color, 0.2);      
+      //divElem.style.transform = `rotate(${Math.random()-0.5}deg)`; // -0.5 to 0.5
     });    
     console.log("===========UseEffect for comments End...===========");
   }, [commentRerender, editorState]); // Note: editorState added to fix issue where user edited some text....but it has side effect about additional re-render

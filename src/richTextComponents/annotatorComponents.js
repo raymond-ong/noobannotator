@@ -91,7 +91,7 @@ const AnnotatorControls = (props) => {
           'MUTABLE',
           {
             comment: commentText,
-            color: 'black', // default
+            color: 'green', // default
             isNew: true, 
           }
         );
@@ -182,6 +182,7 @@ const AnnotatorControls = (props) => {
             }
             else {
                 return <StyleButton 
+                key={type.label}
                 {...type}                
                 onToggle={onClick}
                 />

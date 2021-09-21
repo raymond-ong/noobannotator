@@ -21,10 +21,14 @@ const Comment = (props) => {
     
     const refCommentTxtArea = useRef(null);
     const refWrapper = useRef(null);
+    //const randomTilt = useRef(Math.random()-0.5);
+    const randomTilt = useRef(0);
 
     let styleCommentContainer = {
-        border: `1px solid ${colorToRgbString(colorVal, 1)}`,
-        borderLeft: `4px solid ${colorToRgbString(colorVal, 1)}`
+        //border: `1px solid ${colorToRgbString(colorVal, 1)}`,
+        //borderLeft: `16px solid ${colorToRgbString(colorVal, 1)}`,
+        // background: "-webkit-linear-gradient(315deg, transparent 5px, #c00 5px)", 
+        transform: `rotate(${randomTilt.current}deg)`
     }
 
     let styleColorIcon = {
@@ -33,28 +37,29 @@ const Comment = (props) => {
 
     let styleTextArea = {
         backgroundColor: 'rgba(0,0,0,0)',
+        
     }
 
     let styleCommentBody = {
         backgroundColor: colorToRgbString(colorVal, 0.15),
-    }
+    }    
     
     useEffect(() => {
         /**
          * Alert if clicked on outside of element
          */
         function handleClickOutside(event) {
-          console.log('[handleClickOutside]', commentVal, 'isEditMode', isEditMode, refWrapper.current && !refWrapper.current.contains(event.target));
-          if (refWrapper.current && !refWrapper.current.contains(event.target) && isEditMode) {
+          console.log('[commentComponent][handleClickOutside]', commentVal, 'isEditMode', isEditMode, refWrapper.current && !refWrapper.current.contains(event.target));
+          if (refWrapper.current && !refWrapper.current.contains(event.target)) {
               if (!isNewHandled) {
                 refCommentTxtArea.current.focus();
                 setHandledNew(true);                
-                console.log('[handleClickOutside] processing for new components done');
+                console.log('[commentComponent][handleClickOutside] processing for new components done');
               }
-              else {
+              else if (isEditMode){
                 setEditMode(false);
                 props.parentRerender();
-                console.log('[handleClickOutside] processing for non-new components done');
+                console.log('[commentComponent][handleClickOutside] processing for non-new components done');
               }
           }
         }
@@ -67,7 +72,7 @@ const Comment = (props) => {
       }, [refWrapper, isEditMode, isNewHandled]);
 
     const onFocusHandler = () => {
-        console.log('Focused comment', commentVal);
+        console.log('[commentComponent] Focused comment', commentVal);
         // set to Edit mode
         setEditMode(true);
         props.parentRerender();
@@ -132,7 +137,8 @@ const Comment = (props) => {
                 ref={refCommentTxtArea}
                 placeholder="Comments..."
                 spellCheck={false}
-                style={styleTextArea}
+                style={styleTextArea} 
+                autoFocus={isEditMode}
             />
         </div>
     </div>

@@ -1,11 +1,30 @@
 .CommentContainer {
-    background-color: #fffafa;
+    /* background-color: #fffafa; */
     /* border: 1px solid blue;
     border-left: 3px solid blue;     */
-    border-radius: 5px;
-    margin-bottom: 5px;
+    border-radius: 0px;
+    margin-bottom: 10px;
+    /* transform:rotate(-0.5deg); */
+    box-shadow: 2px 2px 2px rgba(33,33,33,.3);
     /* box-shadow: 2px 2px 2px #888888; */
     /* margin-left: -20px; */
+    /* display: grid;
+    grid-template-columns: 30px auto; */
+    padding-left: 0px;
+    --notchSizeX: 16px;
+    --notchSizeY: 8px;
+    /* clip-path: 
+        circle(5px at */
+    /* clip-path: 
+    polygon(
+      0% var(--notchSizeY), 
+      var(--notchSizeX) 0%, 
+      100% 0%, 
+      100% 100%,
+      var(--notchSizeX) 100%, 
+      0% calc(100% - var(--notchSizeY))
+    ) */
+    ;
 }
 
 .CommentHeader {
@@ -17,7 +36,7 @@
     font-size: 12px;
     vertical-align: middle;
     height: 25px;
-    border-radius: 5px 5px 0px 0px;
+    border-radius: 0px 6px 0px 0px;
 }
 
 .CommentHeaderCaption {
@@ -57,6 +76,7 @@
     /* border: 1px solid red; */
     /* min-height: 1em;
     padding: 1px; */
+    padding: 3px 3px 0px 3px;
 }
 
 .CommentTextArea {
@@ -64,7 +84,10 @@
     border: 0px;
     height: 100%;
     width: 100%;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+    /* font-family: 'IndieFlower-Regular'; */
+    font-family: 'Pangolin-Regular';
+    font-size: 15px;
 }
 
 .CommentTextArea:focus {
@@ -112,3 +135,10 @@
     display: inline-block;
     vertical-align: middle;
 }
+
+.chamferArea {
+    /* border: 1px solid magenta; */
+    /* background: linear-gradient(215deg,red, 5px, #000 5px),  */
+    /* background: linear-gradient(225deg, transparent 5px, blue 5px); */
+}
+                
