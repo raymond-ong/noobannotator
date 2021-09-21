@@ -4,7 +4,8 @@ import StyleButton from '../components/styleButton';
 import {Editor, EditorState, Modifier, RichUtils, convertToRaw, convertFromRaw, CompositeDecorator} from 'draft-js';
 import { Button, Popup } from 'semantic-ui-react';
 import 'emoji-mart/css/emoji-mart.css'
-import { Picker, Emoji } from 'emoji-mart'
+import { Picker, Emoji } from 'emoji-mart';
+import { Popover } from 'react-tiny-popover'
 
 const styles = {
     link: {
@@ -127,6 +128,9 @@ const AnnotatorControls = (props) => {
         else if (style === 'Comment') {
             confirmLink();
         }
+        // else if (style === 'Emoji') {
+        //   setIsPopoverOpen(!isPopoverOpen);
+        // }
     }// onclick - end
 
     const insertEmoji = (emoji) => {
@@ -164,26 +168,34 @@ const AnnotatorControls = (props) => {
         console.log(convertToRaw(content));
     };
 
+    const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+
     return (
         <div className="RichEditor-controls">
         {ANNOTATOR_TYPES.map((type) => {
             if (type.label === 'Emoji') {
-                return <Popup
+                return <Popover
                 key={type.label}
+                isOpen={isPopoverOpen}
+                positions={['bottom']}
+                onClickOutside={() => setIsPopoverOpen(false)}
+                containerStyle={{zIndex: 9999}}
+                // content={<div>Hi! I'm popover content.</div>}
                 content={<Picker
                   onSelect={onEmojiSelect}
                   title={"Select Emoji"}
                 />}
-                on='click'
-                pinned
-                position='bottom center'
                 // There is a bug in semantic ui react that popup does not show when putting react component. Workaround is to surround with a div
-                trigger={<span><StyleButton 
+                >
+                  <span onClick={() => {
+                    console.log('Popover trigger clicked');
+                    setIsPopoverOpen(true)}}> 
+                    <StyleButton 
                     {...type}
                     onToggle={onClick}
                     />
-                    </span>}
-                  />
+                    </span>
+              </Popover>
             }
             else {
                 return <StyleButton 
