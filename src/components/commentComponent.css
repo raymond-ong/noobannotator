@@ -5,7 +5,7 @@
     border-radius: 0px;
     margin-bottom: 10px;
     /* transform:rotate(-0.5deg); */
-    box-shadow: 2px 2px 2px rgba(33,33,33,.3);
+    box-shadow: 3px 3px 3px rgba(33,33,33,.3);
     /* box-shadow: 2px 2px 2px #888888; */
     /* margin-left: -20px; */
     /* display: grid;
@@ -135,10 +135,4 @@
     display: inline-block;
     vertical-align: middle;
 }
-
-.chamferArea {
-    /* border: 1px solid magenta; */
-    /* background: linear-gradient(215deg,red, 5px, #000 5px),  */
-    /* background: linear-gradient(225deg, transparent 5px, blue 5px); */
-}
-                
+ 

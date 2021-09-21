@@ -3,7 +3,8 @@ import '../mainEditor.css';
 import StyleButton from '../components/styleButton';
 import {Editor, EditorState, Modifier, RichUtils, convertToRaw, convertFromRaw, CompositeDecorator} from 'draft-js';
 import { Button, Popup } from 'semantic-ui-react';
-import Picker from 'emoji-picker-react';
+import 'emoji-mart/css/emoji-mart.css'
+import { Picker, Emoji } from 'emoji-mart'
 
 const styles = {
     link: {
@@ -153,8 +154,9 @@ const AnnotatorControls = (props) => {
 
     }
 
-    const onEmojiClick = (event, emojiObject) => {
-        insertEmoji(emojiObject.emoji);
+    const onEmojiSelect = (emojiObject) => {
+      console.log("onEmojiSelect", emojiObject);
+      insertEmoji(emojiObject.native);
     };
 
     const logState = () => {
@@ -168,7 +170,10 @@ const AnnotatorControls = (props) => {
             if (type.label === 'Emoji') {
                 return <Popup
                 key={type.label}
-                content={<Picker onEmojiClick={onEmojiClick} />}
+                content={<Picker
+                  onSelect={onEmojiSelect}
+                  title={"Select Emoji"}
+                />}
                 on='click'
                 pinned
                 position='bottom center'
