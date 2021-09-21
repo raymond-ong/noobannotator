@@ -58,8 +58,8 @@ export const Link = (props) => {
                                                 marginRight: "-200px",
                                                 display: "float",
                                                 pointerEvents: "none"}}>
-          <line id={'svg-line1-'+props.entityKey} x1="0" y1="0" x2="0" y2="0" stroke="rgba(0, 0, 255, 0.4)" strokeWidth="1"/>
-          <line id={'svg-line2-'+props.entityKey} x1="0" y1="0" x2="0" y2="0" stroke="rgba(0, 0, 255, 0.4)" strokeWidth="1"/>
+          <line id={'svg-line1-'+props.entityKey} x1="0" y1="0" x2="0" y2="0" stroke="rgba(0, 0, 255, 0.4)" strokeWidth="2"/>
+          <line id={'svg-line2-'+props.entityKey} x1="0" y1="0" x2="0" y2="0" stroke="rgba(0, 0, 255, 0.4)" strokeWidth="2"/>
         </svg>
         </>
     

@@ -213,7 +213,7 @@ const MainEditor = () => {
       // Set the colors
       line1Elem.setAttribute("stroke", colorToRgbString(color, 0.15));
       line2Elem.setAttribute("stroke", colorToRgbString(color, 0.15));
-      spanElem.style.backgroundColor = colorToRgbString(color, 0.2);      
+      spanElem.style.backgroundColor = colorToRgbString(color, 0.15);      
       //divElem.style.transform = `rotate(${Math.random()-0.5}deg)`; // -0.5 to 0.5
     });    
     console.log("===========UseEffect for comments End...===========");
