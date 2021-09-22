@@ -4,6 +4,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import {colorToRgbString} from '../helpers/colorHelper';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+import {handleHoverComment} from '../helpers/hoverHelper';
 
 import './commentComponent.css';
 
@@ -28,7 +29,7 @@ const Comment = (props) => {
         //border: `1px solid ${colorToRgbString(colorVal, 1)}`,
         //borderLeft: `16px solid ${colorToRgbString(colorVal, 1)}`,
         // background: "-webkit-linear-gradient(315deg, transparent 5px, #c00 5px)", 
-        transform: `rotate(${randomTilt.current}deg)`
+        //transform: `rotate(${randomTilt.current}deg)`
     }
 
     let styleColorIcon = {
@@ -126,6 +127,8 @@ const Comment = (props) => {
         className="CommentContainer" 
         style={styleCommentContainer}
         onFocus={onFocusHandler} 
+        onMouseOver={() => handleHoverComment(refWrapper, props.entityKey, colorVal, true)}
+        onMouseOut={() => handleHoverComment(refWrapper, props.entityKey, colorVal, false)}
         ref={refWrapper}
         >
         {getCommentHeaderElement(isEditMode)}

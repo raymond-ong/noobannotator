@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import '../mainEditor.css';
 import StyleButton from '../components/styleButton';
 import {Editor, EditorState, Modifier, RichUtils, convertToRaw, convertFromRaw, CompositeDecorator} from 'draft-js';
@@ -6,12 +6,17 @@ import { Button, Popup } from 'semantic-ui-react';
 import 'emoji-mart/css/emoji-mart.css'
 import { Picker, Emoji } from 'emoji-mart';
 import { Popover } from 'react-tiny-popover'
+import {handleHoverLink} from '../helpers/hoverHelper';
 
 const styles = {
     link: {
+        border: "2px solid rgba(50, 50, 50, 0.1)", // grayish outline
         backgroundColor: 'rgba(0, 0, 255, 0.1)',
-        borderRadius: '3px',
+        borderRadius: '5px',
         cursor: 'pointer',
+        transform: "rotate(-1deg)",
+        lineHeight: '1.7', // to avoid overlapping with possible comment below
+        // transition: "all 0.3s"
     },
   };
 
@@ -41,14 +46,23 @@ export function findLinkEntities(contentBlock, callback, contentState) {
     );    
   }
 
+
+
   // Set Pointer-Events to none for the SVG to avoid interfering with the mouse cursor and events
 export const Link = (props) => {
   console.log("NEW LINKK!!!!", props);
-  const {url} = props.contentState.getEntity(props.entityKey).getData();
+  //const data = props.contentState.getEntity(props.entityKey).getData();
+  const linkRef = useRef(null);
+  const line1Ref = useRef(null);
+  const line2Ref = useRef(null);
 
     return (
         <>
-        <span id={'comment-span-'+props.entityKey} style={styles.link}>
+        <span id={'comment-span-'+props.entityKey} 
+          style={styles.link} 
+          ref={linkRef} 
+          onMouseOver={() => handleHoverLink(linkRef, props.entityKey, line1Ref, line2Ref, props.contentState.getEntity(props.entityKey).getData(), true )}
+          onMouseOut={() => handleHoverLink(linkRef, props.entityKey, line1Ref, line2Ref, props.contentState.getEntity(props.entityKey).getData(), false )}>
         {props.children}
         </span>
         <svg id={'svg-span-'+props.entityKey} style={{position: "absolute", 
@@ -58,10 +72,10 @@ export const Link = (props) => {
                                                 cursor: "default", 
                                                 zIndex: "100",
                                                 marginRight: "-200px",
-                                                display: "float",
+                                                display: "float",                                                 
                                                 pointerEvents: "none"}}>
-          <line id={'svg-line1-'+props.entityKey} x1="0" y1="0" x2="0" y2="0" stroke="rgba(0, 0, 255, 0.4)" strokeWidth="2"/>
-          <line id={'svg-line2-'+props.entityKey} x1="0" y1="0" x2="0" y2="0" stroke="rgba(0, 0, 255, 0.4)" strokeWidth="2"/>
+          <line id={'svg-line1-'+props.entityKey} x1="0" y1="0" x2="0" y2="0" stroke="rgba(0, 0, 255, 0.4)" strokeWidth="2" ref={line1Ref}/>
+          <line id={'svg-line2-'+props.entityKey} x1="0" y1="0" x2="0" y2="0" stroke="rgba(0, 0, 255, 0.4)" strokeWidth="2"ref={line2Ref}/>
         </svg>
         </>
     
@@ -95,6 +109,8 @@ const AnnotatorControls = (props) => {
             comment: commentText,
             color: 'green', // default
             isNew: true, 
+            parentMouseOver: props.parentMouseOverLink,
+            parentMouseOut: props.parentMouseOutLink,
           }
         );
         const entityKey = contentStateWithEntity.getLastCreatedEntityKey();

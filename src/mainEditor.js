@@ -192,7 +192,6 @@ const MainEditor = () => {
 
        // for those with indents (e.g. bulletted), the svg element's left side is also indented
        // -1 because editorChildRect and svgRect in normal scenario differs by 1
-       // -1 again to avoid overlap between the line and the outer edge of the span highlight
       const svgOffset = svgRect.left - editorChildRect.left-2;
 
       const paddingLeft = 15;
@@ -201,13 +200,13 @@ const MainEditor = () => {
       const offsetEditorAndSpan = spanRect.top - editorRect.top;
       line1Elem.setAttribute("x1", spanRect.right-paddingLeft-svgOffset);
       line1Elem.setAttribute("x2", editorRight-paddingRightLeft-svgOffset);
-      line1Elem.setAttribute("y1", 0.5 + offsetEditorAndSpan);
-      line1Elem.setAttribute("y2", 0.5 + offsetEditorAndSpan);
+      line1Elem.setAttribute("y1", 2.5 + offsetEditorAndSpan);
+      line1Elem.setAttribute("y2", 2.5 + offsetEditorAndSpan);
 
       const divHeightHalf = divRect.height / 2;
       line2Elem.setAttribute("x1", editorRight-paddingRightLeft-svgOffset);
-      line2Elem.setAttribute("x2", editorRight-paddingRightLeft + 23 - svgOffset);
-      line2Elem.setAttribute("y1", 0.5 + offsetEditorAndSpan);
+      line2Elem.setAttribute("x2", editorRight-paddingRightLeft + 24 - svgOffset);
+      line2Elem.setAttribute("y1", 2.5 + offsetEditorAndSpan);
       line2Elem.setAttribute("y2", divRect.top - editorRect.top + divHeightHalf);      
 
       // Set the colors
@@ -270,6 +269,14 @@ const MainEditor = () => {
     },
   };
 
+  // const handleMouseOverLink = (linkRef) => {
+  //   linkRef.current.style.backgroundColor = 'green'
+  // }
+
+  // const handleMouseOutLink = () => {
+    
+  // }
+
   // If the user changes block type before entering any text, we can
   // either style the placeholder or hide it. Let's just hide it now.
   let className = 'RichEditor-editor';
@@ -288,6 +295,8 @@ const MainEditor = () => {
           editorState={editorState}
           onChange={setEditorState}
           parentRerender={() => setCommentReRender(!commentRerender)}
+          // parentMouseOverLink={handleMouseOverLink }
+          // parentMouseOutLink={handleMouseOutLink }
         />
         <InlineStyleControls
           editorState={editorState}

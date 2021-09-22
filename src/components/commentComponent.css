@@ -4,7 +4,8 @@
     border-left: 3px solid blue;     */
     border-radius: 0px;
     margin-bottom: 10px;
-    /* transform:rotate(-0.5deg); */
+    /* transform:rotate(-5deg); */
+    /* transition: all 0.3s; */
     box-shadow: 3px 3px 3px rgba(33,33,33,.3);
     /* box-shadow: 2px 2px 2px #888888; */
     /* margin-left: -20px; */
@@ -26,6 +27,11 @@
     ) */
     ;
 }
+
+/* .CommentContainer:hover {
+    border: 1px solid red;
+    transform: scale(1.05) rotate(-1deg);
+} */
 
 .CommentHeader {
     background-color: #ddd;

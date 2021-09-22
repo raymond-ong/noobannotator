@@ -44,7 +44,12 @@
   
   .RichEditor-editor .public-DraftEditor-content {
     min-height: 100px;
+    padding-top: 5px;
     /* padding-right: 50px; */
+  }
+
+  .RichEditor-editor .public-DraftEditor-content span{
+    line-height: 1.0
   }
   
   .RichEditor-hidePlaceholder .public-DraftEditorPlaceholder-root {
