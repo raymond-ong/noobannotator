@@ -208,7 +208,7 @@ const FileManager3  = (props) => {
         ref={selRef}
         defaultValue={selVal}
     />
-    <div className={classBtnSave} onClick={selVal && onSaveClicked}>
+    <div className={classBtnSave} onClick={selVal && onSaveClicked} title="Save to Local Storage">
         <FontAwesomeIcon icon={faSave}/>
     </div>
     </div>

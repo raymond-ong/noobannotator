@@ -6,9 +6,20 @@ import { StateProvider } from './store.js';
 import FileManager from './components/fileManager';
 import FileManager3 from './components/fileManager3';
 import 'semantic-ui-css/semantic.min.css';
+import { useState } from 'react';
 
 
 function App() {
+  const [isActiveHamburger, setHamburger] = useState(false);
+  let hamClassNames = "hamburger";
+  let hamBarClassNames = "bar-hamburger";
+  let settingsAreaClassNames = "SettingsArea"
+  if (isActiveHamburger) {
+    hamClassNames += " hamburger-active";
+    hamBarClassNames += " bar-hamburger-active";
+    settingsAreaClassNames += " SettingsArea-active";
+  }
+
   return (
     <StateProvider>
       <div className="App">          
@@ -20,9 +31,14 @@ function App() {
 
           <div className="DocTitleArea"></div>
             
-          <div className="SettingsArea">
+          <div className={settingsAreaClassNames}>
             {/* <FileManager/> */}
             <FileManager3/>
+          </div>
+          <div className={hamClassNames} onClick={ () => setHamburger(!isActiveHamburger)}>
+            <span className={hamBarClassNames}></span>
+            <span className={hamBarClassNames}></span>
+            <span className={hamBarClassNames}></span>
           </div>
         </div>
         <MainEditor/>

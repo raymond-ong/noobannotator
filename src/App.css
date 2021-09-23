@@ -21,9 +21,15 @@
   width: 100%;
 }
 
+.AppTitleArea {
+  min-width: 250px;
+}
+
 .AppTitleText {
   padding-left: 10px;
   align-items: center; /* align vertical */
+  cursor: default;
+  user-select: none;
 }
 
 @font-face {
@@ -42,4 +48,60 @@
   font-size: 15px;
   padding-right: 10px;
   margin-left: auto; margin-right: 0;
+}
+
+.hamburger {
+  display: none;
+}
+
+.bar-hamburger {
+  display: block;
+  width: 25px;
+  height: 3px;
+  margin: 5px auto;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  background-color: lightgray;
+}
+
+@media only screen and (max-width: 640px) {
+  .SettingsArea {
+    display: none;
+  }
+
+  .SettingsArea-active {
+    display: block;
+    position: fixed;
+    top: 3.3rem;
+    flex-direction: column;
+    background-color: #fff;
+    padding: 10px;
+    width: 400px;
+    height: 50px;
+    background: #555;
+    border-radius: 10px;
+    text-align: center;
+    transition: 0.3s;
+    box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+}
+  
+  .hamburger {
+    display: block;
+    cursor: pointer;
+    margin-left: auto;
+  }
+
+  .hamburger-active .bar-hamburger:nth-child(2) {
+      opacity: 0;
+  }
+
+  .hamburger-active .bar-hamburger:nth-child(1) {
+      -webkit-transform: translateY(8px) rotate(45deg);
+      transform: translateY(8px) rotate(45deg);
+  }
+
+  .hamburger-active .bar-hamburger:nth-child(3) {
+      -webkit-transform: translateY(-8px) rotate(-45deg);
+      transform: translateY(-8px) rotate(-45deg);
+  }
 }

@@ -10,9 +10,11 @@ import InlineStyleControls from './richTextComponents/inlineComponents';
 import AnnotatorControls, {findLinkEntities, Link} from './richTextComponents/annotatorComponents';
 import Comment from './components/commentComponent';
 import {colorToRgbString} from './helpers/colorHelper';
+import {useWindowSize} from './helpers/windowHelper';
 
 const MainEditor = () => {
   const {state, dispatch} = useContext(store); // Warning: everytime there is a change in the store, will force a re-render
+  const [width, height] = useWindowSize();
   console.log('MainEditor render', state);
   const decoratorLink = new CompositeDecorator([
     {
@@ -97,7 +99,7 @@ const MainEditor = () => {
             return;
           }
           const entityObj = currContent.getEntity(entityKey);
-          if (entityKey !== null && currContent.getEntity(entityKey).getType() === 'LINK') {
+          if (entityKey !== null && currContent.getEntity(entityKey).getType() === 'COMMENT') {
             console.log('[getComments by block]', entityObj);
             let newObj = {
               key: entityKey,
@@ -216,7 +218,7 @@ const MainEditor = () => {
       //divElem.style.transform = `rotate(${Math.random()-0.5}deg)`; // -0.5 to 0.5
     });    
     console.log("===========UseEffect for comments End...===========");
-  }, [commentRerender, editorState]); // Note: editorState added to fix issue where user edited some text....but it has side effect about additional re-render
+  }, [commentRerender, editorState, width, height]); // Note: editorState added to fix issue where user edited some text....but it has side effect about additional re-render
    
   const onChange = (editState) => {       
     setEditorState(editState);

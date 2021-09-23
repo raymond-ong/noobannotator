@@ -26,7 +26,7 @@ const customStyles = {
   container: base => ({ 
       ...base, 
       fontSize: '14px',
-      width: '150px',
+      width: '160px',
       fontFamily: 'Arvo-Bold'
   }),
   control: base => ({ 
@@ -97,7 +97,7 @@ const getOptions = () => {
 
 const formatOptionLabel = ({ value, label, icon}, metadata) => {
   
-  return <div style={{ display: "flex" }}>
+  return <div style={{ display: "flex", alignItems: 'center', height: '100%' }}>
     {icon && <FontAwesomeIcon style={{marginRight: '5px'}} icon={faIcon[icon]}/>}
     <div>{label}</div>
   </div>
@@ -127,7 +127,7 @@ const BlockStyleControls = (props) => {
 
     const optionsList = getOptions();
     let optionVal = blockType ==='unstyled' ? findOption('normal') : findOption(blockType);
-    console.log('BlockStyleControls', blockType, optionVal);      
+    console.log('BlockStyleControls', blockType, optionVal, selection.isCollapsed());      
 
     return (
         <div className="RichEditor-controls">

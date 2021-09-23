@@ -21,10 +21,14 @@ class StyleButton extends React.Component {
       if (this.props.active) {
         className += ' RichEditor-activeButton';
       }
+      if(this.props.isDisabled) {
+        className += ' RichEditor-disabledButton';
+      }
 
       return (
         <span className={className} 
           onMouseDown={this.onToggle}
+          title={this.props.title}
         >
           {this.props.icon && <FontAwesomeIcon icon={faIcon[this.props.icon]}/>}
           {(this.props.showIconAndLabel || !this.props.icon) && `   ${this.props.label}`}

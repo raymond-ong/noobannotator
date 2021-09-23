@@ -21,10 +21,10 @@ const styles = {
   };
 
 const ANNOTATOR_TYPES = [
-    {label: 'Comment', style: 'Comment', icon: 'faCommentDots', showIconAndLabel: true},
-    {label: 'Yes', style: 'Yes', icon: 'faCheck', showIconAndLabel: true},
-    {label: 'No', style: 'No', icon: 'faTimes', showIconAndLabel: true},
-    {label: 'Emoji', style: 'Emoji', popup: true, icon: 'faGrin', showIconAndLabel: true},    
+    {label: 'Comment', style: 'Comment', icon: 'faCommentDots', showIconAndLabel: true, title: 'Highlight text to add Comments', requiresSelection: true},
+    {label: 'Yes', style: 'Yes', icon: 'faCheck', showIconAndLabel: true, title: 'Add Check Mark', requiresSelection: false},
+    {label: 'No', style: 'No', icon: 'faTimes', showIconAndLabel: true, title: 'Add X Mark', requiresSelection: false},
+    {label: 'Emoji', style: 'Emoji', popup: true, icon: 'faGrin', showIconAndLabel: true, title: 'Add Emoji', requiresSelection: false},    
 ];
 
 export function findLinkEntities(contentBlock, callback, contentState) {
@@ -39,7 +39,7 @@ export function findLinkEntities(contentBlock, callback, contentState) {
         
         return (
           entityKey !== null &&
-          contentState.getEntity(entityKey).getType() === 'LINK'
+          contentState.getEntity(entityKey).getType() === 'COMMENT'
         );
       },
       callback
@@ -97,13 +97,17 @@ const AnnotatorControls = (props) => {
 
     const confirmLink = () => {
         console.log('confirmLink start');
+        if (editorState.getSelection().isCollapsed()) {
+          console.log('confirmLink: no selection is made. Exiting function.');
+          return;
+        }
         logState();
         // const {editorState, urlValue} = this.state;
         const commentText = '';
         const contentState = editorState.getCurrentContent();
     
         const contentStateWithEntity = contentState.createEntity(
-          'LINK',
+          'COMMENT',
           'MUTABLE',
           {
             comment: commentText,
@@ -218,6 +222,7 @@ const AnnotatorControls = (props) => {
                 key={type.label}
                 {...type}                
                 onToggle={onClick}
+                isDisabled={type.requiresSelection && selection.isCollapsed()}
                 />
             }
         } // map function
