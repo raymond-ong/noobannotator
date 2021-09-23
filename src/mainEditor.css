@@ -2,6 +2,7 @@
   background-color: #eee;
   padding: 5px;
   height: var(--toolbarHeight);
+  display: flex;
 }
 
 .blockInlineContainer {
@@ -21,7 +22,7 @@
     /* height: calc(100vh); */
     height: 100%;
     --toolbarHeight: 40px;
-    min-width: 640px;
+    min-width: 640px;    
   }
   
   .RichEditor-editor {
@@ -102,13 +103,26 @@
 
   .CommentAreaContainer {
     /* background-color: rgba(255, 248, 220, 0.3);  */
-    padding: 1px;
-    min-width: 640px;
-    overflow: auto;
+    padding: 1px;    
   }
 
 .svgContainer {
   border: 1px solid purple;
   /* position: absolute; */
   /* height: calc(100% - var(--toolbarHeight) - 4em); */
+}
+
+
+@media only screen and (max-width: 700px) {
+  .RichEditor-root {
+    --toolbarHeight: 75px;
+  }
+
+  .blockInlineContainer {
+    flex: 100%;
+  }
+
+  .draftToolBar {
+    display: block;
+  }
 }

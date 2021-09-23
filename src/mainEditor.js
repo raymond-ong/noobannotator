@@ -147,6 +147,7 @@ const MainEditor = () => {
     entities.forEach(entObj => {    
       const {key, entity} = entObj;
       let spanElem = document.getElementById(`comment-span-${key}`);
+      let spanParentElem = document.getElementById(`comment-span-${key}`).parentElement; // for computation related to SVG because SVG and comment-span are siblings
       let line1Elem = document.getElementById(`svg-line1-${key}`);
       let line2Elem = document.getElementById(`svg-line2-${key}`);
       let divElem = document.getElementById(`comment-div-${key}`);
@@ -168,25 +169,33 @@ const MainEditor = () => {
       //console.log('[UseEffect] span iter', key, entity.data.comment, spanElem);
       let divRect = divElem.getBoundingClientRect();
       let spanRect = spanElem.getBoundingClientRect();          
+      let spanParentRect = spanParentElem.getBoundingClientRect();     
       let svgRect = svgElem.getBoundingClientRect();    
 
-      svgElem.style.top = `${editorRect.top - spanRect.top}px`;
+      console.log('svg orig top', svgRect.top);
+      svgElem.style.top = `${editorRect.top - spanParentRect.top}px`;
+      console.log('svg supposed top', editorRect.top - spanRect.top, svgElem.style.top);
       //svgElem.style.left = '0px'
       svgElem.style.height = editorRect.height - 20; // -20 to account for paddings and new line, and prevent unnecessary scrollbar when the content is just few
       // console.log('span top', spanRect.top, 'result top:', svgElem.style.top);
       // console.log('top', svgElem.style.top, 'editorRect.height', editorRect.height, 'editorElem.clientHeight', editorElem.clientHeight);
       //svgElem.style.height = editorElem.clientHeight;
 
+      // Debug borders
+      // spanElem.style.border = '1px solid red';
+      // editorElem.style.border = '1px solid blue';
+      // svgElem.style.border = '1px solid magenta';
+
       // Draw a line from:
       // [a] span bottom-right to editor right
       // [b] editor right to div top
       let editorRight = editorElem.getBoundingClientRect().right;
       //console.log('editorElem right', editorRight, 'spanRect', spanRect, 'divRect', divRect);
-      console.log('editorRect', editorRect.left);
-      console.log('editorChildRect', editorChildRect.left);
+      console.log('editorRect', editorRect.top);
+      console.log('editorChildRect', editorChildRect.top);
       //console.log('divRect', divRect.left);
-      console.log('spanRect', spanRect.left);
-      console.log('svgRect', svgRect.left);
+      console.log('spanRect', spanRect.top);
+      console.log('svgRect', svgRect.top);
       if (divRect.left === 679) {
         //debugger
       }
@@ -300,6 +309,8 @@ const MainEditor = () => {
           // parentMouseOverLink={handleMouseOverLink }
           // parentMouseOutLink={handleMouseOutLink }
         />
+      </div>
+      <div className="blockInlineContainer">
         <InlineStyleControls
           editorState={editorState}
           onToggle={toggleInlineStyle}
@@ -308,7 +319,6 @@ const MainEditor = () => {
           editorState={editorState}
           onToggle={toggleBlockType}
         />
-
       </div>
     </div>
     <div className="EditorAndCommentContainer">
