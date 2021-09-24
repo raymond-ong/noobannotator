@@ -1,4 +1,5 @@
 import {Editor, EditorState, RichUtils, convertToRaw, convertFromRaw, getDefaultKeyBinding} from 'draft-js';
+import {friedRiceRecipeContent} from '../helpers/sampleContent';
 
 export class EditorHelper
 {
@@ -27,6 +28,10 @@ export class EditorHelper
 
         state.editorContent = convertFromRaw(findDoc.docContent);
 
+    }
+
+    static createDemoContent = () => {
+      return convertFromRaw(friedRiceRecipeContent);
     }
 
 }

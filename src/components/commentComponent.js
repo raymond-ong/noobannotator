@@ -111,11 +111,11 @@ const Comment = (props) => {
         return <div className="CommentHeader">
                 <div className="CommentHeaderCaption">Edit Comment</div>
                 <div className="CommentHeaderColor">
-                    <div className="ColorField">
+                    <div className="ColorField" title="Input CSS Color (e.g. #f00, red)">
                         <input className="CommentHeaderColorInput" placeholder="Color" onChange={onColorChanged} defaultValue={colorVal}></input>
                         <Icon style={styleColorIcon} name="square"/>
                     </div>
-                    <div className="deleteCommentBtn" onClick={handleDeleteComment}>
+                    <div className="deleteCommentBtn" onClick={handleDeleteComment} title="Delete Comment">
                         <FontAwesomeIcon icon={faTimesCircle}/>
                     </div>
                 </div>                                    

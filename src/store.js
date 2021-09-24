@@ -46,6 +46,10 @@ const GetInitialState = () => {
         ret.editorContent = content;
         ret.docCurreFileName = fileName;
     }
+    else {
+        // create a sample document
+        ret.editorContent = EditorHelper.createDemoContent();
+    }
 
     return ret;
 }
