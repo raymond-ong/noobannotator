@@ -21,6 +21,6 @@ https://raymond-ong.github.io/noobannotator/
 * Although it would still work in mobile browsers, it's not as intuitive (e.g. selecting text)
 
 ### TODO's
-[ ] Better placement of the comments (currently just stacking the comments 
-[ ] Better mobile browser support
-[ ] Add in more Rich Text Box features (e.g. Colors, Highlighting, Images)
+- [ ] Better placement of the comments (currently just stacking the comments 
+- [ ] Better mobile browser support
+- [ ] Add in more Rich Text Box features (e.g. Colors, Highlighting, Images)  
