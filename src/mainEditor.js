@@ -100,7 +100,7 @@ const MainEditor = () => {
           }
           const entityObj = currContent.getEntity(entityKey);
           if (entityKey !== null && currContent.getEntity(entityKey).getType() === 'COMMENT') {
-            console.log('[getComments by block]', entityObj);
+            //console.log('[getComments by block]', entityObj);
             let newObj = {
               key: entityKey,
               entity: entityObj,
@@ -131,14 +131,8 @@ const MainEditor = () => {
 
   const commentsAndEntities = getCommentsAndEntities(editorState);
 
-
-  // For drawing line or repositioning comment blocks    
-  useEffect(() => {    
-    // let currContent = editorState.getCurrentContent();
-    // let blocks = currContent.getBlockMap();
+  const drawConnectorLines = () => {
     let entities = commentsAndEntities;  
-    //console.log("===========UseEffect for All comments Start...===========", 'rerender', commentRerender);
-    console.log("===========UseEffect for All comments Start...===========", 'entities count', entities.length);
     let editorElem = document.getElementById('RichEditor-editor');
     let editorChildElem = editorElem.firstChild;
 
@@ -155,31 +149,26 @@ const MainEditor = () => {
       let color = entity.data.color;
       
       if (!spanElem) {
-        console.log('[UseEffect] span iter', key, entity.data.comment, 'not found');
+        console.log('[drawConnectorLines] span iter', key, entity.data.comment, 'not found');
         return;
       }
       if (!divElem) {
-        console.log('[UseEffect] div iter', key, entity.data.comment, 'not found');
+        console.log('[drawConnectorLines] div iter', key, entity.data.comment, 'not found');
         return;
       }
 
-      console.log("===========UseEffect for comments Start...===========", entity.data.comment);
+      //console.log("===========drawConnectorLines for comments Start...===========", entity.data.comment);
      
-      //console.log('[UseEffect] div iter', key, entity.data.comment, divElem);
-      //console.log('[UseEffect] span iter', key, entity.data.comment, spanElem);
       let divRect = divElem.getBoundingClientRect();
       let spanRect = spanElem.getBoundingClientRect();          
       let spanParentRect = spanParentElem.getBoundingClientRect();     
       let svgRect = svgElem.getBoundingClientRect();    
 
-      console.log('svg orig top', svgRect.top);
+      //console.log('svg orig top', svgRect.top);
       svgElem.style.top = `${editorRect.top - spanParentRect.top}px`;
-      console.log('svg supposed top', editorRect.top - spanRect.top, svgElem.style.top);
+      //console.log('svg supposed top', editorRect.top - spanRect.top, svgElem.style.top);
       //svgElem.style.left = '0px'
       svgElem.style.height = editorRect.height - 20; // -20 to account for paddings and new line, and prevent unnecessary scrollbar when the content is just few
-      // console.log('span top', spanRect.top, 'result top:', svgElem.style.top);
-      // console.log('top', svgElem.style.top, 'editorRect.height', editorRect.height, 'editorElem.clientHeight', editorElem.clientHeight);
-      //svgElem.style.height = editorElem.clientHeight;
 
       // Debug borders
       // spanElem.style.border = '1px solid red';
@@ -190,16 +179,10 @@ const MainEditor = () => {
       // [a] span bottom-right to editor right
       // [b] editor right to div top
       let editorRight = editorElem.getBoundingClientRect().right;
-      //console.log('editorElem right', editorRight, 'spanRect', spanRect, 'divRect', divRect);
-      console.log('editorRect', editorRect.top);
-      console.log('editorChildRect', editorChildRect.top);
-      //console.log('divRect', divRect.left);
-      console.log('spanRect', spanRect.top);
-      console.log('svgRect', svgRect.top);
-      if (divRect.left === 679) {
-        //debugger
-      }
-      //console.log('------', divRect.top - editorRect.top);
+      // console.log('editorRect', editorRect.top);
+      // console.log('editorChildRect', editorChildRect.top);
+      // console.log('spanRect', spanRect.top);
+      // console.log('svgRect', svgRect.top);
 
        // for those with indents (e.g. bulletted), the svg element's left side is also indented
        // -1 because editorChildRect and svgRect in normal scenario differs by 1
@@ -224,8 +207,96 @@ const MainEditor = () => {
       line1Elem.setAttribute("stroke", colorToRgbString(color, 0.15));
       line2Elem.setAttribute("stroke", colorToRgbString(color, 0.15));
       spanElem.style.backgroundColor = colorToRgbString(color, 0.15);      
-      //divElem.style.transform = `rotate(${Math.random()-0.5}deg)`; // -0.5 to 0.5
-    });    
+    });
+  }
+
+  const willCauseOverlflow = (adjustmentFromPrevBot, divHeight, editorHeight, remainingDivHeight) => {
+    return adjustmentFromPrevBot + divHeight + remainingDivHeight > editorHeight;
+  }
+
+  // Main goal is try to align the span and the div so that it will be easier to see.
+  // If main goal cannot be achieved due to space constraints:
+  // try to move some comments up to lessen the scrolling
+  const adjustDivPositions = () => {
+    let entities = commentsAndEntities;  
+    let editorElem = document.getElementById('RichEditor-editor');
+    let editorRect = editorElem.getBoundingClientRect();    
+    const marginBottomComment = 10; // margin-bottom value for each comment 
+
+    const sumDivHeights = entities.reduce( (prev, currEnt) => {
+      const {key, entity} = currEnt;
+      let divElem = document.getElementById(`comment-div-${key}`);
+      let divRect = divElem.getBoundingClientRect();
+      return prev + divRect.height + marginBottomComment;
+    }, 0);
+
+    console.log('[adjustDivPositions] start, total height divs', sumDivHeights, 'VS Editor Height', editorRect.height);
+
+    let prevBottom = editorRect.top;
+    let sumDivsPrev = 0;
+    for (let i = 0; i < entities.length; i++) {
+      let entObj = entities[i];
+      const {key, entity} = entObj;
+      let spanElem = document.getElementById(`comment-span-${key}`);
+      let divElem = document.getElementById(`comment-div-${key}`);
+      if (!spanElem) {
+        console.log('[adjustDivPositions] span iter', key, entity.data.comment, 'not found');
+        continue;
+      }
+      if (!divElem) {
+        console.log('[adjustDivPositions] div iter', key, entity.data.comment, 'not found');
+        continue;
+      }
+
+      let divRect = divElem.getBoundingClientRect();
+      let spanRect = spanElem.getBoundingClientRect();
+
+      let diffSpanDiv = spanRect.top - divRect.top;
+      //let currentTop = divRect.top;
+      let supposedTop = spanRect.top;
+      //let adjustment =  currentTop - supposedTop;
+      //let adjustmentFromPrevBot = currentTop - prevBottom - adjustment;
+      let adjustmentFromPrevBot = supposedTop - prevBottom; // margin needed to make exactly align the span and div...but this may be too much so there are more handling below
+      if (adjustmentFromPrevBot > 0) {
+        let remainingDivHeight = sumDivHeights - sumDivsPrev - divRect.height - marginBottomComment;
+        //let willOverflow = willCauseOverlflow(adjustmentFromPrevBot, divRect.height, editorRect.height, sumDivHeights-sumDivsPrev);
+        //let willOverflow = prevBottom + adjustmentFromPrevBot + divRect.height + marginBottomComment + remainingDivHeight + 30 > editorRect.height;
+        let spaceRequired = editorRect.bottom - prevBottom - divRect.height - marginBottomComment - remainingDivHeight - 10 - 20; // -10 for extra space below, -20 for edit mode
+        let willOverflow = spaceRequired < adjustmentFromPrevBot;
+        if (willOverflow) {          
+          console.log('[adjustDivPositions] willOverflow adding ', adjustmentFromPrevBot, entity.data.comment.substring(0, 3) + '...space required', spaceRequired);
+          console.log('editorRect.bottom', editorRect.bottom);
+          console.log('divRect.bottom', divRect.bottom);
+          console.log('prevBottom', prevBottom);
+          console.log('remainingDivHeight', remainingDivHeight);
+          if (spaceRequired > 0) {
+            divElem.style.marginTop = spaceRequired + 'px';
+          } 
+          else {
+            console.log('[adjustDivPositions] Space required is not enough...dont adjust');
+          }
+        }
+        else {
+          console.log('[adjustDivPositions] Adjusted element', entity.data.comment.substring(0, 3), 'by', adjustmentFromPrevBot, 'height', divRect.height);
+          divElem.style.marginTop = adjustmentFromPrevBot + 'px';
+        }
+      }
+      else {
+        // means there will be overlap with previous element; do nothing
+        console.log('[adjustDivPositions] We cannot adjust this because will overlap with previous elements');
+      }
+      
+      sumDivsPrev += divRect.height + marginBottomComment;
+      prevBottom = divElem.getBoundingClientRect().bottom;
+    }
+  }
+
+  // For drawing line or repositioning comment blocks    
+  useEffect(() => {        
+    console.log("===========UseEffect for All comments Start...===========");
+    adjustDivPositions();
+    drawConnectorLines();
+
     console.log("===========UseEffect for comments End...===========");
   }, [commentRerender, editorState, width, height]); // Note: editorState added to fix issue where user edited some text....but it has side effect about additional re-render
    

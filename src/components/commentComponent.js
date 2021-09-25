@@ -50,7 +50,7 @@ const Comment = (props) => {
          * Alert if clicked on outside of element
          */
         function handleClickOutside(event) {
-          console.log('[commentComponent][handleClickOutside]', commentVal, 'isEditMode', isEditMode, refWrapper.current && !refWrapper.current.contains(event.target));
+          console.log('[commentComponent][handleClickOutside]', commentVal.substring(0, 3), 'isEditMode', isEditMode, refWrapper.current && !refWrapper.current.contains(event.target));
           if (refWrapper.current && !refWrapper.current.contains(event.target)) {
               if (!isNewHandled) {
                 refCommentTxtArea.current.focus();
@@ -122,7 +122,7 @@ const Comment = (props) => {
             </div>;
     }
    
-    console.log('[commentComponent render]', commentVal, 'isEditMode', isEditMode);
+    console.log('[commentComponent render]', commentVal.substring(0, 3), 'isEditMode', isEditMode);
     return <div id={'comment-div-' + props.entityKey} 
         className="CommentContainer" 
         style={styleCommentContainer}
