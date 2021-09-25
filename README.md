@@ -1,5 +1,6 @@
 # noobannotator
 This is a Rich Text Editor (based on DraftJs) that allows user to add comments and emoji's into articles.
+![alt text](https://github.com/raymond-ong/noobannotator/blob/master/screenshots/screenshot_default.png?raw=true)
 
 ## Features
 1. Add Comments and Emoji's into rich text editor
@@ -21,6 +22,6 @@ https://raymond-ong.github.io/noobannotator/
 * Although it would still work in mobile browsers, it's not as intuitive (e.g. selecting text)
 
 ### TODO's
-- [ ] Better placement of the comments (currently just stacking the comments 
+- [X] Better placement of the comments (currently just stacking the comments 
 - [ ] Better mobile browser support
 - [ ] Add in more Rich Text Box features (e.g. Colors, Highlighting, Images)  
