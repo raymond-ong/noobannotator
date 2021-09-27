@@ -134,6 +134,10 @@ const MainEditor = () => {
   const drawConnectorLines = () => {
     let entities = commentsAndEntities;  
     let editorElem = document.getElementById('RichEditor-editor');
+    if (!editorElem) {
+      console.log('[drawConnectorLines] Editor element is not found.  Most likely because editor is empty.');
+      return;
+    }
     let editorChildElem = editorElem.firstChild;
 
     let editorRect = editorElem.getBoundingClientRect();    
@@ -220,6 +224,10 @@ const MainEditor = () => {
   const adjustDivPositions = () => {
     let entities = commentsAndEntities;  
     let editorElem = document.getElementById('RichEditor-editor');
+    if (!editorElem) {
+      console.log('[adjustDivPositions] Editor element is not found. Most likely because editor is empty.');
+      return;
+    }
     let editorRect = editorElem.getBoundingClientRect();    
     const marginBottomComment = 10; // margin-bottom value for each comment 
 
