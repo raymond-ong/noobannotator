@@ -161,7 +161,7 @@ const MainEditor = () => {
         return;
       }
 
-      //console.log("===========drawConnectorLines for comments Start...===========", entity.data.comment);
+      console.log("===========drawConnectorLines for comments Start...===========", entity.data.comment.substring(0, 3));
      
       let divRect = divElem.getBoundingClientRect();
       let spanRect = spanElem.getBoundingClientRect();          
@@ -170,6 +170,7 @@ const MainEditor = () => {
 
       //console.log('svg orig top', svgRect.top);
       svgElem.style.top = `${editorRect.top - spanParentRect.top}px`;
+      //svgElem.style.top = `${-1 * spanParentRect.top}px`;
       //console.log('svg supposed top', editorRect.top - spanRect.top, svgElem.style.top);
       //svgElem.style.left = '0px'
       svgElem.style.height = editorRect.height - 20; // -20 to account for paddings and new line, and prevent unnecessary scrollbar when the content is just few
@@ -184,9 +185,10 @@ const MainEditor = () => {
       // [b] editor right to div top
       let editorRight = editorElem.getBoundingClientRect().right;
       // console.log('editorRect', editorRect.top);
-      // console.log('editorChildRect', editorChildRect.top);
-      // console.log('spanRect', spanRect.top);
-      // console.log('svgRect', svgRect.top);
+      // console.log('editorChildRect', editorChildRect.left);
+      // console.log('spanRect', spanRect.left);
+      // console.log('svgRect', svgRect.left);
+      // console.log('divRect', divRect.left);
 
        // for those with indents (e.g. bulletted), the svg element's left side is also indented
        // -1 because editorChildRect and svgRect in normal scenario differs by 1
@@ -291,7 +293,9 @@ const MainEditor = () => {
       }
       else {
         // means there will be overlap with previous element; do nothing
-        console.log('[adjustDivPositions] We cannot adjust this because will overlap with previous elements');
+        console.log(`[adjustDivPositions] We cannot adjust this elem (${entity.data.comment.substring(0, 3)}) because will overlap with previous elements`, adjustmentFromPrevBot);
+        // Just remove the previously set marginTop. There is a rerender (editorStateChange) right before a new comment is added. This pre-render could set the marginTop.
+        divElem.style.marginTop = ''; 
       }
       
       sumDivsPrev += divRect.height + marginBottomComment;

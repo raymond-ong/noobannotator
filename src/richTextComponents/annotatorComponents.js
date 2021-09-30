@@ -67,7 +67,7 @@ export const Link = (props) => {
         </span>
         <svg id={'svg-span-'+props.entityKey} style={{position: "absolute", 
                                                 width: "calc(100% + 100px)", 
-                                                height: "500px", 
+                                                height: "0px", // Set to 0. Initially set to 500 and causes momentary scrollbar and incorrect calculations
                                                 left: "0", 
                                                 cursor: "default", 
                                                 zIndex: "100",

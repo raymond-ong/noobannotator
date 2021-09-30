@@ -12,10 +12,6 @@ class StyleButton extends React.Component {
       };
     }
 
-    // renderIcon() {
-    //   return <FontAwesomeIcon icon={faCommentDots}/>
-    // }
-
     render() {
       let className = 'RichEditor-styleButton';
       if (this.props.active) {

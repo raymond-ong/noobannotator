@@ -127,7 +127,6 @@ const BlockStyleControls = (props) => {
 
     const optionsList = getOptions();
     let optionVal = blockType ==='unstyled' ? findOption('normal') : findOption(blockType);
-    console.log('BlockStyleControls', blockType, optionVal, selection.isCollapsed());      
 
     return (
         <div className="RichEditor-controls">
