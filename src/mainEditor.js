@@ -314,10 +314,11 @@ const MainEditor = () => {
   // For drawing line or repositioning comment blocks    
   useLayoutEffect(() => {        
     console.log("===========UseEffect for All comments Start...===========");
-    adjustDivPositions();
+    
     // Call the SVG function drawing asynchronously because it is relies on DOM element already in-place/repainted.
     // During Window resize (via double click of window header), this function is called before actual repainting has been done (even after changing to useLayoutEffect)
     setTimeout(() => {
+      adjustDivPositions();
       drawConnectorLines();
     }, 0);
 

@@ -7,7 +7,7 @@ export const friedRiceRecipeContent = {
 			"inlineStyleRanges": [],
 			"entityRanges": [{
 					"offset": 0,
-					"length": 27,
+					"length": 10,
 					"key": 0
 				}
 			],
@@ -204,7 +204,7 @@ export const friedRiceRecipeContent = {
 			"mutability": "MUTABLE",
 			"data": {
 				"comment": "You can modify the color of this comment by clicking on this comment and setting a CSS color in the field above, e.g. \"darkblue\", \"#11F\" or \"#123456\"",
-				"color": "darkblue"
+				"color": "red"
 			}
 		},
 		"2": {
@@ -212,7 +212,7 @@ export const friedRiceRecipeContent = {
 			"mutability": "MUTABLE",
 			"data": {
 				"comment": "To add a comment, highlight some text, then click the Comment button.",
-				"color": "red"
+				"color": "orange"
 			}
 		},
 		"3": {

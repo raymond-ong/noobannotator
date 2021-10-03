@@ -1,7 +1,10 @@
 .App {
   /* border: 1px solid red; */
   height: calc(100vh);
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
+  /* min-width: 360px; */
+  /* overflow-x: auto; */
+  overflow: auto;
 }
 
 .AppHeader {
@@ -11,8 +14,9 @@
   background-color: #555;
   color: #ccc;
   font-family: 'Arvo-Bold';
-  display: grid;
-  grid-template-columns: 4fr 1fr 6fr;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
   position: fixed;
   top: 0;

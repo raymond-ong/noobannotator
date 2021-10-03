@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { Icon, Input } from 'semantic-ui-react'
 import {colorToRgbString} from '../helpers/colorHelper';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+import { faTimesCircle, faSquare } from "@fortawesome/free-solid-svg-icons";
 import {handleHoverComment} from '../helpers/hoverHelper';
 import autosize from 'autosize';
 
@@ -33,7 +32,8 @@ const Comment = (props) => {
     }
 
     let styleColorIcon = {
-        color: `${colorVal}`
+        color: `${colorVal}`,
+        marginRight: '4px'
     }
 
     let styleTextArea = {
@@ -116,7 +116,7 @@ const Comment = (props) => {
                 <div className="CommentHeaderColor">
                     <div className="ColorField" title="Input CSS Color (e.g. #f00, red)">
                         <input className="CommentHeaderColorInput" placeholder="Color" onChange={onColorChanged} defaultValue={colorVal}></input>
-                        <Icon style={styleColorIcon} name="square"/>
+                        <FontAwesomeIcon style={styleColorIcon} icon={faSquare}/>
                     </div>
                     <div className="deleteCommentBtn" onClick={handleDeleteComment} title="Delete Comment">
                         <FontAwesomeIcon icon={faTimesCircle}/>

@@ -1,46 +1,20 @@
 .CommentContainer {
-    /* background-color: #fffafa; */
-    /* border: 1px solid blue;
-    border-left: 3px solid blue;     */
     border-radius: 0px;
     margin-bottom: 10px;
-    /* transform:rotate(-5deg); */
-    /* transition: all 0.3s; */
     box-shadow: 3px 3px 3px rgba(33,33,33,.3);
-    /* box-shadow: 2px 2px 2px #888888; */
-    /* margin-left: -20px; */
-    /* display: grid;
-    grid-template-columns: 30px auto; */
     padding-left: 0px;
     --notchSizeX: 16px;
     --notchSizeY: 8px;
-    /* clip-path: 
-        circle(5px at */
-    /* clip-path: 
-    polygon(
-      0% var(--notchSizeY), 
-      var(--notchSizeX) 0%, 
-      100% 0%, 
-      100% 100%,
-      var(--notchSizeX) 100%, 
-      0% calc(100% - var(--notchSizeY))
-    ) */
-    ;
 }
-
-/* .CommentContainer:hover {
-    border: 1px solid red;
-    transform: scale(1.05) rotate(-1deg);
-} */
 
 .CommentHeader {
     background-color: #ddd;
     padding: 1px 5px 1px 5px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     font-weight: 500;
-    font-size: 12px;
-    vertical-align: middle;
+    font-size: 12px;    
     height: 25px;
     border-radius: 0px;
 }
@@ -49,29 +23,43 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    /* border: 1px solid blue; */
+    min-width: 50px;
+    flex: 0 1 80px;
 }
 
 .CommentHeaderColor {
     margin-left: auto; 
     margin-right: 0;    
     display: flex;
-    align-items: center;    
+    justify-content: flex-end;
+    align-items: center;
+    flex: 1 1 100px;
+    /* border: 1px solid green; */
 }
 
 .ColorField {
     background-color: white;
     display: flex;
+    justify-content: flex-end;
+    align-items: center;
     margin: 2px;
-    flex: 1 1 auto;
+    flex: 1 1 150px;
+    /* border: 1px solid magenta; */
+    max-width: 150px;
 }
 
 
 .CommentHeaderColorInput {
-    width: 80px;
+    /* width: 80px; */
+    width: 100%;
+    /* max-width: 150px; */
+    min-width: 50px;
     height: 18px;
     border: 0px;
     margin: 0px;
     font-size: 12px;
+    flex: 1 1 90px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;    
 }
 
@@ -81,9 +69,6 @@
 }
 
 .CommentBody {
-    /* border: 1px solid red; */
-    /* min-height: 1em;
-    padding: 1px; */
     padding: 3px 3px 0px 3px;
 }
 
@@ -92,8 +77,6 @@
     border: 0px;
     height: 100%;
     width: 100%;
-    /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
-    /* font-family: 'IndieFlower-Regular'; */
     font-family: 'Pangolin-Regular', Arial, Helvetica, sans-serif;;
     font-size: 1.05rem;
     line-height: 1.1rem;

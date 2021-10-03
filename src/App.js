@@ -29,17 +29,15 @@ function App() {
             <span className="AppTitleText">Noob Annotator</span>
           </div>
 
-          <div className="DocTitleArea"></div>
-            
-          <div className={settingsAreaClassNames}>
-            {/* <FileManager/> */}
-            <FileManager3/>
-          </div>
-          <div className={hamClassNames} onClick={ () => setHamburger(!isActiveHamburger)}>
-            <span className={hamBarClassNames}></span>
-            <span className={hamBarClassNames}></span>
-            <span className={hamBarClassNames}></span>
-          </div>
+                    
+            <div className={settingsAreaClassNames}>
+              <FileManager3/>
+            </div>
+            <div className={hamClassNames} onClick={ () => setHamburger(!isActiveHamburger)}>
+              <span className={hamBarClassNames}></span>
+              <span className={hamBarClassNames}></span>
+              <span className={hamBarClassNames}></span>
+            </div>          
         </div>
         <MainEditor/>
       </div>

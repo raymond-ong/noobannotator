@@ -3,6 +3,7 @@
   padding: 5px;
   height: var(--toolbarHeight);
   display: flex;
+  min-width: 360px;
 }
 
 .blockInlineContainer {
@@ -22,7 +23,7 @@
     /* height: calc(100vh); */
     height: 100%;
     --toolbarHeight: 40px;
-    /* min-width: 640px;     */
+    min-width: 360px;
   }
   
   .RichEditor-editor {
