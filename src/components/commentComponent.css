@@ -24,7 +24,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     /* border: 1px solid blue; */
-    min-width: 50px;
+    min-width: 40px;
     flex: 0 1 80px;
 }
 
@@ -44,9 +44,9 @@
     justify-content: flex-end;
     align-items: center;
     margin: 2px;
-    flex: 1 1 150px;
+    flex: 1 1 90px;
     /* border: 1px solid magenta; */
-    max-width: 150px;
+    max-width: 120px;
 }
 
 
@@ -59,7 +59,7 @@
     border: 0px;
     margin: 0px;
     font-size: 12px;
-    flex: 1 1 90px;
+    flex: 1 1 70px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;    
 }
 
