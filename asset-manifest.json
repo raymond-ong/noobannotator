@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/noobannotator/static/css/main.e4e4d0ac.chunk.css",
-    "main.js": "/noobannotator/static/js/main.48549e7f.chunk.js",
-    "main.js.map": "/noobannotator/static/js/main.48549e7f.chunk.js.map",
+    "main.css": "/noobannotator/static/css/main.7cc9579b.chunk.css",
+    "main.js": "/noobannotator/static/js/main.4a8058a0.chunk.js",
+    "main.js.map": "/noobannotator/static/js/main.4a8058a0.chunk.js.map",
     "runtime-main.js": "/noobannotator/static/js/runtime-main.84bdd2e4.js",
     "runtime-main.js.map": "/noobannotator/static/js/runtime-main.84bdd2e4.js.map",
     "static/css/2.9a2ecff2.chunk.css": "/noobannotator/static/css/2.9a2ecff2.chunk.css",
@@ -10,7 +10,7 @@
     "static/js/2.2d99474d.chunk.js.map": "/noobannotator/static/js/2.2d99474d.chunk.js.map",
     "index.html": "/noobannotator/index.html",
     "static/css/2.9a2ecff2.chunk.css.map": "/noobannotator/static/css/2.9a2ecff2.chunk.css.map",
-    "static/css/main.e4e4d0ac.chunk.css.map": "/noobannotator/static/css/main.e4e4d0ac.chunk.css.map",
+    "static/css/main.7cc9579b.chunk.css.map": "/noobannotator/static/css/main.7cc9579b.chunk.css.map",
     "static/js/2.2d99474d.chunk.js.LICENSE.txt": "/noobannotator/static/js/2.2d99474d.chunk.js.LICENSE.txt",
     "static/media/App.css": "/noobannotator/static/media/Pangolin-Regular.7960c77c.ttf",
     "static/media/semantic.min.css": "/noobannotator/static/media/outline-icons.ddae9b1b.woff"
@@ -19,7 +19,7 @@
     "static/js/runtime-main.84bdd2e4.js",
     "static/css/2.9a2ecff2.chunk.css",
     "static/js/2.2d99474d.chunk.js",
-    "static/css/main.e4e4d0ac.chunk.css",
-    "static/js/main.48549e7f.chunk.js"
+    "static/css/main.7cc9579b.chunk.css",
+    "static/js/main.4a8058a0.chunk.js"
   ]
 }
