@@ -403,17 +403,6 @@ const MainEditor = () => {
         />
       </div>
       <div className="CommentAreaContainer">{commentsAndEntities.map(ent => ent.div)}</div>
-      {/* <svg id={'svg-span-'} style={{position: "absolute", 
-                                                width: "calc(100% + 100px)", 
-                                                height: "500px", // Set to 0. Initially set to 500 and causes momentary scrollbar and incorrect calculations
-                                                left: "0", 
-                                                cursor: "default", 
-                                                zIndex: "100",
-                                                marginRight: "-200px",
-                                                display: "float",                                                 
-                                                pointerEvents: "none"}}>
-          <line id={'svg-line1-'} x1="0" y1="0" x2="200" y2="200" stroke="rgba(0, 0, 255, 0.4)" strokeWidth="2"/>
-        </svg> */}
     </div>
   </div>
 }
