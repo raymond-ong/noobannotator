@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import { Icon, Input } from 'semantic-ui-react'
-import TextareaAutosize from 'react-textarea-autosize';
 import {colorToRgbString} from '../helpers/colorHelper';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import {handleHoverComment} from '../helpers/hoverHelper';
+import autosize from 'autosize';
 
 import './commentComponent.css';
 
@@ -62,14 +62,17 @@ const Comment = (props) => {
                 props.parentRerender();
                 console.log('[commentComponent][handleClickOutside] processing for non-new components done');
               }
+              autosize(refCommentTxtArea.current);
           }
         }
         // Bind the event listener
         document.addEventListener("mousedown", handleClickOutside);
+        autosize(refCommentTxtArea.current);
         return () => {
           // Unbind the event listener on clean up
           document.removeEventListener("mousedown", handleClickOutside);
         };
+
       }, [refWrapper, isEditMode, isNewHandled]);
 
     const onFocusHandler = () => {
@@ -133,7 +136,7 @@ const Comment = (props) => {
         >
         {getCommentHeaderElement(isEditMode)}
         <div className="CommentBody" style={styleCommentBody}>
-            <TextareaAutosize 
+            <textarea
                 className="CommentTextArea" 
                 value={commentVal} 
                 onChange={onCommentChanged}

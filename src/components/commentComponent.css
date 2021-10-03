@@ -94,8 +94,10 @@
     width: 100%;
     /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
     /* font-family: 'IndieFlower-Regular'; */
-    font-family: 'Pangolin-Regular', Arial, Helvetica, sans-serif;
-    font-size: 15px;
+    font-family: 'Pangolin-Regular', Arial, Helvetica, sans-serif;;
+    font-size: 1.05rem;
+    line-height: 1.1rem;
+    box-sizing: border-box;
 }
 
 .CommentTextArea:focus {
