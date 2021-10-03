@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useLayoutEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 import {Editor, EditorState, RichUtils, convertToRaw, convertFromRaw, getDefaultKeyBinding, CompositeDecorator, SelectionState} from 'draft-js';
 import { store } from './store.js';
@@ -142,6 +142,20 @@ const MainEditor = () => {
 
     let editorRect = editorElem.getBoundingClientRect();    
     let editorChildRect = editorChildElem.getBoundingClientRect();    
+
+    // reset all svgElem sizes first to get rid of scrollbars intervening during window resize (e.g. reducing window height causes a scrollbar)
+    // Tip: Was able to figure this out by adding a setTimeout in calling this function.
+    // Without calling setTimeout, the DOMS have not been repainted during window resize when this function is called. 
+    //    DOM value manipulations as we step through the code are also just being cached and does not take effect visually (although DOM measurement values given seem to be updated)
+    // After adding a setTimeout, the repainting with the new window size has been performed and we can see what's really happening as we step through the code
+    //    (e.g. saw a temporary scrollbar during breakpoint, that disappears later).
+    entities.forEach(entObj => {   
+      const {key, entity} = entObj;
+      let svgElem = document.getElementById(`svg-span-${key}`);
+      svgElem.style.height = '0px';
+      svgElem.style.top = '0px'
+    });
+
     entities.forEach(entObj => {    
       const {key, entity} = entObj;
       let spanElem = document.getElementById(`comment-span-${key}`);
@@ -169,8 +183,8 @@ const MainEditor = () => {
       let svgRect = svgElem.getBoundingClientRect();    
 
       //console.log('svg orig top', svgRect.top);
-      svgElem.style.top = `${editorRect.top - spanParentRect.top}px`;
       svgElem.style.height = `${editorRect.height - 20}px`; // -20 to account for paddings and new line, and prevent unnecessary scrollbar when the content is just few
+      svgElem.style.top = `${editorRect.top - spanParentRect.top}px`;
 
       // Debug borders
       // spanElem.style.border = '1px solid red';
@@ -181,11 +195,11 @@ const MainEditor = () => {
       // [a] span bottom-right to editor right
       // [b] editor right to div top
       let editorRight = editorElem.getBoundingClientRect().right;
-      // console.log('editorRect', editorRect.top);
-      // console.log('editorChildRect', editorChildRect.left);
-      // console.log('spanRect', spanRect.left);
-      // console.log('svgRect', svgRect.left);
-      // console.log('divRect', divRect.left);
+      console.log('editorRect', editorRect.left);
+      console.log('editorChildRect', editorChildRect.left);
+      console.log('spanRect', spanRect.left);
+      console.log('svgRect', svgRect.left);
+      console.log('divRect', divRect.left);
 
        // for those with indents (e.g. bulletted), the svg element's left side is also indented
        // -1 because editorChildRect and svgRect in normal scenario differs by 1
@@ -268,11 +282,11 @@ const MainEditor = () => {
         let spaceRequired = editorRect.bottom - prevBottom - divRect.height - marginBottomComment - remainingDivHeight - 10 - 20; // -10 for extra space below, -20 for edit mode
         let willOverflow = spaceRequired < adjustmentFromPrevBot;
         if (willOverflow) {          
-          console.log('[adjustDivPositions] willOverflow adding ', adjustmentFromPrevBot, entity.data.comment.substring(0, 3) + '...space required', spaceRequired);
-          console.log('editorRect.bottom', editorRect.bottom);
-          console.log('divRect.bottom', divRect.bottom);
-          console.log('prevBottom', prevBottom);
-          console.log('remainingDivHeight', remainingDivHeight);
+          // console.log('[adjustDivPositions] willOverflow adding ', adjustmentFromPrevBot, entity.data.comment.substring(0, 3) + '...space required', spaceRequired);
+          // console.log('editorRect.bottom', editorRect.bottom);
+          // console.log('divRect.bottom', divRect.bottom);
+          // console.log('prevBottom', prevBottom);
+          // console.log('remainingDivHeight', remainingDivHeight);
           if (spaceRequired > 0) {
             divElem.style.marginTop = spaceRequired + 'px';
           } 
@@ -281,13 +295,13 @@ const MainEditor = () => {
           }
         }
         else {
-          console.log('[adjustDivPositions] Adjusted element', entity.data.comment.substring(0, 3), 'by', adjustmentFromPrevBot, 'height', divRect.height);
+          //console.log('[adjustDivPositions] Adjusted element', entity.data.comment.substring(0, 3), 'by', adjustmentFromPrevBot, 'height', divRect.height);
           divElem.style.marginTop = adjustmentFromPrevBot + 'px';
         }
       }
       else {
         // means there will be overlap with previous element; do nothing
-        console.log(`[adjustDivPositions] We cannot adjust this elem (${entity.data.comment.substring(0, 3)}) because will overlap with previous elements`, adjustmentFromPrevBot);
+        //console.log(`[adjustDivPositions] We cannot adjust this elem (${entity.data.comment.substring(0, 3)}) because will overlap with previous elements`, adjustmentFromPrevBot);
         // Just remove the previously set marginTop. There is a rerender (editorStateChange) right before a new comment is added. This pre-render could set the marginTop.
         divElem.style.marginTop = ''; 
       }
@@ -298,10 +312,14 @@ const MainEditor = () => {
   }
 
   // For drawing line or repositioning comment blocks    
-  useEffect(() => {        
+  useLayoutEffect(() => {        
     console.log("===========UseEffect for All comments Start...===========");
     adjustDivPositions();
-    drawConnectorLines();
+    // Call the SVG function drawing asynchronously because it is relies on DOM element already in-place/repainted.
+    // During Window resize (via double click of window header), this function is called before actual repainting has been done (even after changing to useLayoutEffect)
+    setTimeout(() => {
+      drawConnectorLines();
+    }, 0);
 
     console.log("===========UseEffect for comments End...===========");
   }, [commentRerender, editorState, width, height]); // Note: editorState added to fix issue where user edited some text....but it has side effect about additional re-render
