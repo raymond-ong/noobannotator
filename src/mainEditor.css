@@ -22,7 +22,7 @@
     /* height: calc(100vh); */
     height: 100%;
     --toolbarHeight: 40px;
-    min-width: 640px;    
+    /* min-width: 640px;     */
   }
   
   .RichEditor-editor {
@@ -93,7 +93,7 @@
 
   .EditorAndCommentContainer {
     display: grid;
-    grid-template-columns: auto 300px;
+    grid-template-columns: 4fr minmax(150px, 2fr);
     overflow: auto;
     border: 1px solid lightgray;
     height: calc(100% - var(--toolbarHeight));

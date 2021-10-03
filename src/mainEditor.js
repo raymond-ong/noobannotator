@@ -170,9 +170,6 @@ const MainEditor = () => {
 
       //console.log('svg orig top', svgRect.top);
       svgElem.style.top = `${editorRect.top - spanParentRect.top}px`;
-      //svgElem.style.top = `${-1 * spanParentRect.top}px`;
-      //console.log('svg supposed top', editorRect.top - spanRect.top, svgElem.style.top);
-      //svgElem.style.left = '0px'
       svgElem.style.height = editorRect.height - 20; // -20 to account for paddings and new line, and prevent unnecessary scrollbar when the content is just few
 
       // Debug borders
@@ -262,10 +259,7 @@ const MainEditor = () => {
       let spanRect = spanElem.getBoundingClientRect();
 
       let diffSpanDiv = spanRect.top - divRect.top;
-      //let currentTop = divRect.top;
       let supposedTop = spanRect.top;
-      //let adjustment =  currentTop - supposedTop;
-      //let adjustmentFromPrevBot = currentTop - prevBottom - adjustment;
       let adjustmentFromPrevBot = supposedTop - prevBottom; // margin needed to make exactly align the span and div...but this may be too much so there are more handling below
       if (adjustmentFromPrevBot > 0) {
         let remainingDivHeight = sumDivHeights - sumDivsPrev - divRect.height - marginBottomComment;

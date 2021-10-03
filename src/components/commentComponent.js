@@ -109,7 +109,7 @@ const Comment = (props) => {
         }
     
         return <div className="CommentHeader">
-                <div className="CommentHeaderCaption">Edit Comment</div>
+                <div className="CommentHeaderCaption" title="Edit Comment">Edit Comment</div>
                 <div className="CommentHeaderColor">
                     <div className="ColorField" title="Input CSS Color (e.g. #f00, red)">
                         <input className="CommentHeaderColorInput" placeholder="Color" onChange={onColorChanged} defaultValue={colorVal}></input>
