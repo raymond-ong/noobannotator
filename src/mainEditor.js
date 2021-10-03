@@ -170,7 +170,7 @@ const MainEditor = () => {
 
       //console.log('svg orig top', svgRect.top);
       svgElem.style.top = `${editorRect.top - spanParentRect.top}px`;
-      svgElem.style.height = editorRect.height - 20; // -20 to account for paddings and new line, and prevent unnecessary scrollbar when the content is just few
+      svgElem.style.height = `${editorRect.height - 20}px`; // -20 to account for paddings and new line, and prevent unnecessary scrollbar when the content is just few
 
       // Debug borders
       // spanElem.style.border = '1px solid red';
@@ -357,14 +357,6 @@ const MainEditor = () => {
     },
   };
 
-  // const handleMouseOverLink = (linkRef) => {
-  //   linkRef.current.style.backgroundColor = 'green'
-  // }
-
-  // const handleMouseOutLink = () => {
-    
-  // }
-
   // If the user changes block type before entering any text, we can
   // either style the placeholder or hide it. Let's just hide it now.
   let className = 'RichEditor-editor';
@@ -383,8 +375,6 @@ const MainEditor = () => {
           editorState={editorState}
           onChange={setEditorState}
           parentRerender={() => setCommentReRender(!commentRerender)}
-          // parentMouseOverLink={handleMouseOverLink }
-          // parentMouseOutLink={handleMouseOutLink }
         />
       </div>
       <div className="blockInlineContainer">
@@ -413,6 +403,17 @@ const MainEditor = () => {
         />
       </div>
       <div className="CommentAreaContainer">{commentsAndEntities.map(ent => ent.div)}</div>
+      {/* <svg id={'svg-span-'} style={{position: "absolute", 
+                                                width: "calc(100% + 100px)", 
+                                                height: "500px", // Set to 0. Initially set to 500 and causes momentary scrollbar and incorrect calculations
+                                                left: "0", 
+                                                cursor: "default", 
+                                                zIndex: "100",
+                                                marginRight: "-200px",
+                                                display: "float",                                                 
+                                                pointerEvents: "none"}}>
+          <line id={'svg-line1-'} x1="0" y1="0" x2="200" y2="200" stroke="rgba(0, 0, 255, 0.4)" strokeWidth="2"/>
+        </svg> */}
     </div>
   </div>
 }
